@@ -138,6 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : (
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser',
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -157,4 +159,4 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN': 'refresh_token',
 }
 
-AUTH_USER_MODEL = "account.User"
+AUTH_USER_MODEL = "account.CustomUser"

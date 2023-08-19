@@ -6,13 +6,14 @@ from rest_framework.serializers import ValidationError
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ["username", "password"]
+        fields = ["username", "password","role"]
 
     def validate(self, attrs):
         username = attrs.get('username', '')
         password = attrs.get('password', '')
-        if not (username and password):
-            raise ValidationError({"detail": "[password, username] fields missing."})
+        role = attrs.get('role','')
+        if not (username and password and role):
+            raise ValidationError({"detail": "[password, username, role] fields missing."})
         return attrs
 
 
