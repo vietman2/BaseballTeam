@@ -1,9 +1,10 @@
-import React from "react";
 import MainContainer from "./navigation/MainContainer"
+import Login from "./components/Login/Login";
 
 function App(){
   return(
-    <MainContainer/>
+    <Login/>
+    /*<MainContainer/>*/
   );
 }
 export default App;
