@@ -16,6 +16,10 @@ class UserSerializer(ModelSerializer):
             raise ValidationError({"detail": "[password, username, role] fields missing."})
         return attrs
 
+class UserAuthorityCheckSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["role"]
 
 from .models import UserProfile
 
