@@ -1,8 +1,5 @@
-import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider as ReduxProvider } from "react-redux";
 
-import MainContainer from "./navigation/MainContainer"
 import Login from "./components/Login/Login";
 import { AuthProvider } from "./components/AuthProvider/AuthProvider";
 import store from "./store/store";
