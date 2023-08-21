@@ -1,6 +1,7 @@
 import { Provider as ReduxProvider } from "react-redux";
 
 import Login from "./components/Login/Login";
+import MainContainer from "./containers/MainContainer";
 import { AuthProvider } from "./components/AuthProvider/AuthProvider";
 import store from "./store/store";
 
@@ -22,14 +23,13 @@ function App(){
     */
 
   // 아래는 Temporary
-  return(
+  return (
     <AuthProvider>
       <ReduxProvider store={store}>
-        <Login/>
+        {/* <Login /> */}
+        <MainContainer />
       </ReduxProvider>
     </AuthProvider>
-    
-    // <MainContainer/>
   );
 }
 export default App;
