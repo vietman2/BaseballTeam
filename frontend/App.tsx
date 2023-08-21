@@ -30,7 +30,6 @@ function App(){
       <ReduxProvider store={store}>
         <Login/>
       </ReduxProvider>
-      
     </AuthProvider>
     
     // <MainContainer/>
