@@ -43,5 +43,9 @@
   "private": true,
   "resolutions": {
     "styled-components": "^5"
-  }
+  },
+  "eslintIgnore": [
+    "babel.config.js",
+    ".eslintrc.js"
+  ]
 }
