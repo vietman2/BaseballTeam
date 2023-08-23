@@ -5,9 +5,23 @@ import {
   TextInput,
   Platform,
   TouchableOpacity,
-  Text
+  Text,
+  Image,
 } from "react-native";
-import { styles } from "./styles";
+import { viewStyles, textStyles, containerStyles } from "./styles";
+
+interface buttonProps {
+  text: string;
+  onPress: () => void;
+}
+
+const MyButton = (props: buttonProps) => {
+  return (
+    <TouchableOpacity style={viewStyles.button} onPress={props.onPress}>
+      <Text style={textStyles.buttonText}>{props.text}</Text>
+    </TouchableOpacity>
+  );
+};
 
 export default function Login() {
   const [username, setUsername] = useState<string>("");
@@ -17,37 +31,59 @@ export default function Login() {
   const handleSignIn = async () => {};
   const handleRegister = async () => {};
 
-  return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
-      enabled
-    >
-      <View style={styles.textInputBox}>
+  const TopBox = () => {
+    return (
+      <View style={containerStyles.topBoxContainer}>
+        <Image
+          source={require("../../assets/logo.jpg")}
+          style={viewStyles.logo}
+        />
+        <Text style={textStyles.titleText}>로그인</Text>
+      </View>
+    );
+  };
+
+  const TextInputFields = () => {
+    return (
+      <View style={containerStyles.textInputContainer}>
         <View>
           <TextInput
-            style={styles.textInputField}
+            style={viewStyles.textInputField}
             placeholder="아이디"
             onChangeText={(text) => setUsername(text)}
             value={username}
           />
           <TextInput
-            style={styles.textInputField}
+            style={viewStyles.textInputField}
             placeholder="비밀번호"
             onChangeText={(text) => setPassword(text)}
             value={password}
           />
         </View>
       </View>
-      <View style={styles.buttonBox}>
-        <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>회원가입</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-          <Text style={styles.buttonText}>로그인</Text>
-        </TouchableOpacity>
+    );
+  };
+
+  const Buttons = () => {
+    return (
+      <View style={containerStyles.buttonContainer}>
+        <MyButton text="로그인" onPress={handleSignIn} />
+        <Text style={textStyles.normalText}>계정이 없으신가요?</Text>
+        <MyButton text="회원가입" onPress={handleRegister} />
       </View>
+    );
+  };
+
+  return (
+    <KeyboardAvoidingView
+      style={containerStyles.mainContainer}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      enabled
+    >
+      <TopBox />
+      <TextInputFields />
+      <Buttons />
       {errorMessage ? <Text>{errorMessage}</Text> : null}
     </KeyboardAvoidingView>
   );

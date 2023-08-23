@@ -26,8 +26,8 @@ function App(){
   return (
     <AuthProvider>
       <ReduxProvider store={store}>
-        {/* <Login /> */}
-        <MainContainer />
+        {/* <MainContainer /> */}
+        <Login />
       </ReduxProvider>
     </AuthProvider>
   );

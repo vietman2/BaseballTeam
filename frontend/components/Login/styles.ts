@@ -1,44 +1,70 @@
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  textInputBox: {
-    marginTop: 300,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+const viewStyles = StyleSheet.create({
   textInputField: {
-    width: 300,
-    height: 50,
-    marginVertical: 10,
-    padding: 10,
+    height: 40,
+    borderColor: "gray",
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: "#00ffff",
-  },
-  buttonBox: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   button: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    marginRight: 60,
-    marginTop: 10,
-    width: 100,
-    height: 50,
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "#00ffff",
+    height: 40,
+    backgroundColor: "#00aeef",
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    alignSelf: "center",
+    marginTop: 100,
+  },
+});
+
+const textStyles = StyleSheet.create({
+  titleText: {
+    fontSize: 30,
+    fontWeight: "bold",
+    alignSelf: "center",
+    marginTop: 20,
   },
   buttonText: {
     fontSize: 20,
     fontWeight: "bold",
   },
+  normalText: {
+    fontSize: 15,
+    fontWeight: "normal",
+    alignSelf: "center",
+    marginTop: 20,
+  },
 });
 
-export { styles };
+const containerStyles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  textInputContainer: {
+    marginHorizontal: 50,
+    alignItems: "stretch",
+    justifyContent: "center",
+  },
+  topBoxContainer: {
+    marginTop: 70,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonContainer: {
+    marginHorizontal: 50,
+    alignItems: "stretch",
+    justifyContent: "center",
+  },
+});
+
+
+export { viewStyles, textStyles, containerStyles };
