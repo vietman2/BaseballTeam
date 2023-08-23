@@ -4,30 +4,16 @@ import {
   View,
   TextInput,
   Platform,
-  TouchableOpacity,
   Text,
   Image,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { AuthStackParamList } from "../Base";
+import { AuthStackParamList } from "./Base";
 import { viewStyles, textStyles, containerStyles } from "./styles";
-
+import { MyButton, TopBox } from "./Components";
 
 type Props = NativeStackScreenProps<AuthStackParamList, "Login">;
-
-interface buttonProps {
-  text: string;
-  onPress: () => void;
-}
-
-const MyButton = (props: buttonProps) => {
-  return (
-    <TouchableOpacity style={viewStyles.button} onPress={props.onPress}>
-      <Text style={textStyles.buttonText}>{props.text}</Text>
-    </TouchableOpacity>
-  );
-};
 
 export default function Login({ navigation }: Props) {
   const [username, setUsername] = useState<string>("");
@@ -39,18 +25,6 @@ export default function Login({ navigation }: Props) {
   };
   const handleRegister = async () => {
     navigation.navigate("SignUp");
-  };
-
-  const TopBox = () => {
-    return (
-      <View style={containerStyles.topBoxContainer}>
-        <Image
-          source={require("../../../assets/logo.jpg")}
-          style={viewStyles.logo}
-        />
-        <Text style={textStyles.titleText}>로그인</Text>
-      </View>
-    );
   };
 
   const TextInputFields = () => {

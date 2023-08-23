@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Login from "./Login/Login";
-import SignUp from "./SignUp/SignUp";
+import Login from "./Login";
+import SignUp from "./SignUp";
 
 export type AuthStackParamList = {
   Login: undefined;
