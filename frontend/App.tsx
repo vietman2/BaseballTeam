@@ -1,8 +1,8 @@
 import { Provider as ReduxProvider } from "react-redux";
 
-import Login from "./components/Login/Login";
+import Base from "./components/Account/Base";
 import MainContainer from "./containers/MainContainer";
-import { AuthProvider } from "./components/AuthProvider/AuthProvider";
+import { AuthProvider } from "./components/Account/AuthProvider/AuthProvider";
 import store from "./store/store";
 
 function App(){
@@ -27,7 +27,7 @@ function App(){
     <AuthProvider>
       <ReduxProvider store={store}>
         {/* <MainContainer /> */}
-        <Login />
+        <Base />
       </ReduxProvider>
     </AuthProvider>
   );
