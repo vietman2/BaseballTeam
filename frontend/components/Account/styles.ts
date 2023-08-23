@@ -55,7 +55,7 @@ const containerStyles = StyleSheet.create({
     justifyContent: "center",
   },
   topBoxContainer: {
-    marginTop: 70,
+    marginTop: 30,
     alignItems: "center",
     justifyContent: "center",
   },

@@ -65,7 +65,7 @@ export default function Login({ navigation }: Props) {
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
       enabled
     >
-      <TopBox />
+      <TopBox title="로그인" />
       <TextInputFields />
       <Buttons />
       {errorMessage ? <Text>{errorMessage}</Text> : null}

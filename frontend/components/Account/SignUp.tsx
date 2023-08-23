@@ -1,15 +1,23 @@
 import { useState } from "react";
 import { Text, KeyboardAvoidingView, Platform, View, TextInput } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { TopBox } from "./Components";
+import { MyButton, TopBox } from "./Components";
+import { AuthStackParamList } from "./Base";
 import { containerStyles, viewStyles } from "./styles";
 
-export default function SignUp() {
+type Props = NativeStackScreenProps<AuthStackParamList, "SignUp">;
+
+export default function SignUp({ navigation }: Props) {
   const [username, setUsername] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordCheck, setPasswordCheck] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const handleNext = async () => {
+    navigation.navigate("SignUp2");
+  };
 
   const TextInputFields = () => {
     return (
@@ -23,7 +31,7 @@ export default function SignUp() {
           />
           <TextInput
             style={viewStyles.textInputField}
-            placeholder="전화번호"
+            placeholder="전화번호 (주장단 기록용)"
             onChangeText={(text) => setPhoneNumber(text)}
             value={phoneNumber}
           />
@@ -44,6 +52,14 @@ export default function SignUp() {
     );
   }
 
+  const Buttons = () => {
+    return (
+      <View style={containerStyles.buttonContainer}>
+        <MyButton text="계속하기 (1/2)" onPress={handleNext} />
+      </View>
+    );
+  }
+
   return (
     <KeyboardAvoidingView
       style={containerStyles.mainContainer}
@@ -51,8 +67,9 @@ export default function SignUp() {
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
       enabled
     >
-      <TopBox />
+      <TopBox title="회원가입" />
       <TextInputFields />
+      <Buttons />
       {errorMessage ? <Text>{errorMessage}</Text> : null}
     </KeyboardAvoidingView>
   );

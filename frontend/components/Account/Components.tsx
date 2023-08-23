@@ -15,14 +15,18 @@ export const MyButton = (props: buttonProps) => {
   );
 };
 
-export const TopBox = () => {
+interface TopBoxProps {
+    title: string;
+}
+
+export const TopBox = (props: TopBoxProps) => {
   return (
     <View style={containerStyles.topBoxContainer}>
       <Image
-        source={require("../../../assets/logo.jpg")}
+        source={require("../../assets/logo.jpg")}
         style={viewStyles.logo}
       />
-      <Text style={textStyles.titleText}>로그인</Text>
+      <Text style={textStyles.titleText}>{props.title}</Text>
     </View>
   );
 };
