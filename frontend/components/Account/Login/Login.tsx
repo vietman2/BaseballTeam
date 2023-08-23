@@ -8,7 +8,13 @@ import {
   Text,
   Image,
 } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+import { AuthStackParamList } from "../Base";
 import { viewStyles, textStyles, containerStyles } from "./styles";
+
+
+type Props = NativeStackScreenProps<AuthStackParamList, "Login">;
 
 interface buttonProps {
   text: string;
@@ -23,19 +29,23 @@ const MyButton = (props: buttonProps) => {
   );
 };
 
-export default function Login() {
+export default function Login({ navigation }: Props) {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const handleSignIn = async () => {};
-  const handleRegister = async () => {};
+  const handleSignIn = async () => {
+    // TODO: Implement login
+  };
+  const handleRegister = async () => {
+    navigation.navigate("SignUp");
+  };
 
   const TopBox = () => {
     return (
       <View style={containerStyles.topBoxContainer}>
         <Image
-          source={require("../../assets/logo.jpg")}
+          source={require("../../../assets/logo.jpg")}
           style={viewStyles.logo}
         />
         <Text style={textStyles.titleText}>로그인</Text>

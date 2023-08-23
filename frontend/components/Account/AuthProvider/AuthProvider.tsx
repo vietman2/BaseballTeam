@@ -1,6 +1,6 @@
 import { createContext, useState, useContext } from "react";
 
-import { User } from "../../variables/types";
+import { User } from "../../../variables/types";
 
 // TODO: Finish this
 
