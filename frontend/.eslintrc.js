@@ -32,6 +32,6 @@ module.exports = {
     ],
     "rules": {
         "react/react-in-jsx-scope": "off",
-        "no-explicit-any": "off",
+        "@typescript-eslint/no-explicit-any": "off",
     }
 }
