@@ -22,7 +22,7 @@ export default function MainContainer() {
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
-        screenOptions={({ route }) => ({
+        screenOptions={() => ({
           headerShown: false,
         })}
         tabBar={({ navigation, state, descriptors, insets }) => (
@@ -54,7 +54,6 @@ export default function MainContainer() {
               return null;
             }}
             getLabelText={({ route }) => {
-              const { options } = descriptors[route.key];
               const label = route.name;
               return label;
             }}

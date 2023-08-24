@@ -16,8 +16,9 @@ interface AuthProviderProps {
     children: React.ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [user, setUser] = useState<User | null>(null);
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }: AuthProviderProps) => {
+    //const [user, setUser] = useState<User | null>(null);
+    const user: User | null = null;
 
     return (
         <AuthContext.Provider value={{ user }}>

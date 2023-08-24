@@ -1,7 +1,7 @@
 import { Provider as ReduxProvider } from "react-redux";
 
 import Base from "./components/Account/Base";
-import MainContainer from "./containers/MainContainer";
+//import MainContainer from "./containers/MainContainer";
 import { AuthProvider } from "./components/Account/AuthProvider/AuthProvider";
 import store from "./store/store";
 

@@ -5,7 +5,6 @@ import {
   TextInput,
   Platform,
   Text,
-  Image,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -22,6 +21,7 @@ export default function Login({ navigation }: Props) {
 
   const handleSignIn = async () => {
     // TODO: Implement login
+    setErrorMessage("로그인 기능은 아직 구현되지 않았습니다.");
   };
   const handleRegister = async () => {
     navigation.navigate("SignUp");

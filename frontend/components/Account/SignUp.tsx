@@ -16,6 +16,10 @@ export default function SignUp({ navigation }: Props) {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleNext = async () => {
+    if (password !== passwordCheck) {
+      setErrorMessage("비밀번호가 일치하지 않습니다.");
+      return;
+    }
     navigation.navigate("SignUp2");
   };
 
