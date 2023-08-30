@@ -1,27 +1,27 @@
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.models import User
 from rest_framework.serializers import ValidationError
+from .models import UserProfile,CustomUser
 
 
 class UserSerializer(ModelSerializer):
     class Meta:
-        model = User
-        fields = ["username", "password","role"]
+        model = CustomUser
+        fields = ["username", "password","phone_number"]
 
     def validate(self, attrs):
         username = attrs.get('username', '')
         password = attrs.get('password', '')
-        role = attrs.get('role','')
-        if not (username and password and role):
-            raise ValidationError({"detail": "[password, username, role] fields missing."})
+        phone_number = attrs.get('phone_number','')
+        if not (username and password and phone_number):
+            raise ValidationError({"detail": "[password, username, phone_number] fields missing."})
         return attrs
 
 class UserAuthorityCheckSerializer(ModelSerializer):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ["role"]
 
-from .models import UserProfile
 
 class UserProfileSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
