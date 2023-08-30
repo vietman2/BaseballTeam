@@ -6,7 +6,7 @@ class CustomUser(AbstractUser,PermissionsMixin):
     관리자 = 1
     주장단 = 2
     부원 = 3
-    
+
     ROLE_CHOICES = (
         (관리자, '관리자'),
         (주장단, '주장단'),

@@ -21,7 +21,6 @@ class UserAuthorityCheckSerializer(ModelSerializer):
         model = CustomUser
         fields = ["role"]
 
-
 class UserProfileSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
 

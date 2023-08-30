@@ -21,7 +21,7 @@ class SignupStep1View(APIView):
         if user_serializer.is_valid(raise_exception=True):
             user = user_serializer.save()  # 실제 데이터베이스에 사용자를 저장
         return Response({"user_id" : user.id}, status = status.HTTP_200_OK)
-    
+
 class SignupStep2View(APIView):
     def post(self,request):
         user_id = request.data.get('user_id')
@@ -53,7 +53,7 @@ class SigninView(APIView):
         except:
             return Response({"detail": "아이디 또는 비밀번호를 확인해주세요."}, status=status.HTTP_400_BAD_REQUEST)
         return set_token_on_response_cookie(user)
-        
+
 class LogoutView(APIView):
     def post(self, request):
         if not request.user.is_authenticated:
