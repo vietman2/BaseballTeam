@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { AuthStackParamList } from "./Base";
+import { AuthStackParamList } from "../../containers/AccountContainer";
 import { viewStyles, textStyles, containerStyles } from "./styles";
 import { MyButton, TopBox } from "./Components";
 
@@ -20,8 +20,16 @@ export default function Login({ navigation }: Props) {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSignIn = async () => {
-    // TODO: Implement login
-    setErrorMessage("로그인 기능은 아직 구현되지 않았습니다.");
+    /* Error 1: username or password is empty
+    if (username === "" || password === "") {
+      setErrorMessage("아이디와 비밀번호를 입력해주세요.");
+      return;
+    } */
+    // Error 2: username or password is wrong
+    // Error 3: server error
+    // Error 4: network error
+    // Error 5: unknown error
+    // If there is no error, navigate to the main page
   };
   const handleRegister = async () => {
     navigation.navigate("SignUp");
@@ -30,20 +38,18 @@ export default function Login({ navigation }: Props) {
   const TextInputFields = () => {
     return (
       <View style={containerStyles.textInputContainer}>
-        <View>
-          <TextInput
-            style={viewStyles.textInputField}
-            placeholder="아이디"
-            onChangeText={(text) => setUsername(text)}
-            value={username}
-          />
-          <TextInput
-            style={viewStyles.textInputField}
-            placeholder="비밀번호"
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-          />
-        </View>
+        <TextInput
+          style={viewStyles.textInputField}
+          placeholder="아이디"
+          onChangeText={(text) => setUsername(text)}
+          value={username}
+        />
+        <TextInput
+          style={viewStyles.textInputField}
+          placeholder="비밀번호"
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+        />
       </View>
     );
   };
@@ -52,6 +58,9 @@ export default function Login({ navigation }: Props) {
     return (
       <View style={containerStyles.buttonContainer}>
         <MyButton text="로그인" onPress={handleSignIn} />
+        {errorMessage ? (
+          <Text style={textStyles.errorText}>{errorMessage}</Text>
+        ) : null}
         <Text style={textStyles.normalText}>계정이 없으신가요?</Text>
         <MyButton text="회원가입" onPress={handleRegister} />
       </View>
@@ -68,7 +77,6 @@ export default function Login({ navigation }: Props) {
       <TopBox title="로그인" />
       <TextInputFields />
       <Buttons />
-      {errorMessage ? <Text>{errorMessage}</Text> : null}
     </KeyboardAvoidingView>
   );
 }
