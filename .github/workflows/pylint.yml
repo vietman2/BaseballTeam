@@ -26,4 +26,4 @@ jobs:
       run: |
         cd backend
         source test/bin/activate
-        DJANGO_SETTINGS_MODULE=baseball_team.settings pylint --load-plugins pylint_django .
+        DJANGO_SETTINGS_MODULE=baseball_team.settings pylint **/*.py --load-plugins pylint_django
