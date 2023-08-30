@@ -50,7 +50,7 @@ class SigninView(APIView):
                 username=request.data['username'],
                 password=request.data['password']
             )
-        except:
+        except CustomUser.DoesNotExist:
             return Response({"detail": "아이디 또는 비밀번호를 확인해주세요."}, status=status.HTTP_400_BAD_REQUEST)
         return set_token_on_response_cookie(user)
 
