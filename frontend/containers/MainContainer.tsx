@@ -8,18 +8,17 @@ import TrainingScreen from "../components/Training/Training";
 import MyPageScreen from "../components/MyPage/MyPage";
 import CalendarScreen from "../components/Calendar/Calendar";
 
-type RootTabParamList = {
+type MainTabParamList = {
   Home: undefined;
   Training: undefined;
   MyPage: undefined;
   Calendar: undefined;
 };
 
-const Tab = createBottomTabNavigator<RootTabParamList>();
+const Tab = createBottomTabNavigator<MainTabParamList>();
 
 export default function MainContainer() {
   return (
-    <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
         screenOptions={() => ({
@@ -97,6 +96,5 @@ export default function MainContainer() {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 }
