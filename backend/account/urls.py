@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import SigninView, SignupStep1View,SignupStep2View,LogoutView
-
+from .views import SigninView, SignupStep1View, SignupStep2View, LogoutView
 
 app_name = 'account'
 urlpatterns = [
