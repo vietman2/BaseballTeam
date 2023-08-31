@@ -41,6 +41,7 @@ class SignupStep2View(APIView):
             position=position,
             pitcher=pitcher
         )
+        user_profile.save()
 
         return set_token_on_response_cookie(user)
 
