@@ -42,6 +42,13 @@ const textStyles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 20,
   },
+  errorText: {
+    fontSize: 15,
+    fontWeight: "normal",
+    alignSelf: "center",
+    marginTop: 10,
+    color: "red",
+  },
 });
 
 const containerStyles = StyleSheet.create({

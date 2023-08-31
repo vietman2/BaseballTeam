@@ -1,5 +1,4 @@
 from rest_framework.serializers import ModelSerializer
-from django.contrib.auth.models import User
 from rest_framework.serializers import ValidationError
 from .models import UserProfile,CustomUser
 
@@ -7,7 +6,7 @@ from .models import UserProfile,CustomUser
 class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ["username", "password","phone_number"]
+        fields = ["username", "password", "phone_number"]
 
     def validate(self, attrs):
         username = attrs.get('username', '')
@@ -21,7 +20,6 @@ class UserAuthorityCheckSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ["role"]
-
 
 class UserProfileSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
