@@ -2,7 +2,6 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import ValidationError
 from .models import CustomUser
 
-
 class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
