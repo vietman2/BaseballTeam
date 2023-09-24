@@ -1,4 +1,4 @@
-import { CommonActions, NavigationContainer } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomNavigation } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
