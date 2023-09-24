@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import ValidationError
-from .models import UserProfile,CustomUser
+from .models import CustomUser
 
 
 class UserSerializer(ModelSerializer):
@@ -22,8 +22,6 @@ class UserAuthorityCheckSerializer(ModelSerializer):
         fields = ["role"]
 
 class UserProfileSerializer(ModelSerializer):
-    user = UserSerializer(read_only=True)
-
     class Meta:
-        model = UserProfile
+        model = CustomUser
         fields = "__all__"
