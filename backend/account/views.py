@@ -3,13 +3,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import UserProfile,CustomUser
+from .models import CustomUser
 from .serializers import UserSerializer,UserProfileSerializer
 
 
 def set_token_on_response_cookie(user: CustomUser) -> Response:
     token = RefreshToken.for_user(user)
-    user_profile = UserProfile.objects.get(user=user)
+    user_profile = CustomUser.objects.get(user=user)
     user_profile_serializer = UserProfileSerializer(user_profile)
     res = Response(user_profile_serializer.data, status=status.HTTP_200_OK)
     res.set_cookie('refresh_token', value=str(token), httponly=True)
@@ -33,15 +33,16 @@ class SignupStep2View(APIView):
         position=request.data.get('position')
         pitcher=request.data.get('pitcher')
 
-        user_profile = UserProfile.objects.create(
-            user=user,
-            name=name,
-            major=major,
-            grade=grade,
-            position=position,
-            pitcher=pitcher
-        )
-        user_profile.save()
+        ## TODO: 수정 필요
+        #user_profile = UserProfile.objects.create(
+        #    user=user,
+        #    name=name,
+        #    major=major,
+        #    grade=grade,
+        #    position=position,
+        #    pitcher=pitcher
+        #)
+        #user_profile.save()
 
         return set_token_on_response_cookie(user)
 
