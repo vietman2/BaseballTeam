@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser,PermissionsMixin
-from phonenumber_field.modelfields import PhoneNumberField
 
 관리자 = 1
 주장단 = 2
@@ -14,6 +13,7 @@ ROLE_CHOICES = (
 
 class CustomUser(AbstractUser,PermissionsMixin):
     name = models.CharField(max_length=32, blank=True)
+    phone_number = models.CharField(blank=True)
     major = models.CharField(max_length=32, blank=True)
     grade = models.IntegerField(default=0)
     position = models.CharField(max_length=32, blank=True)
@@ -21,4 +21,4 @@ class CustomUser(AbstractUser,PermissionsMixin):
     is_active = models.BooleanField(default=True)
 
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=3)
-    phone_number = PhoneNumberField(unique=True, null=True, blank=False)
+    
