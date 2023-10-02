@@ -13,9 +13,8 @@ ROLE_CHOICES = (
 
 class CustomUser(AbstractUser,PermissionsMixin):
     name = models.CharField(max_length=32, blank=True)
-    phone_number = models.CharField(blank=True)
     major = models.CharField(max_length=32, blank=True)
-    grade = models.IntegerField(default=0)
+    grade = models.IntegerField(default=0, blank=True)
     position = models.CharField(max_length=32, blank=True)
     is_pitcher = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
