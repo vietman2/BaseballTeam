@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account',
-    "phonenumber_field",
+    'participation.session',
+    'participation.attendance',
+    'participation.week',
     'rest_framework_simplejwt',
     'rest_framework',
     'corsheaders'

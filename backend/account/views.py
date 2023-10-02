@@ -34,15 +34,15 @@ class SignupStep2View(APIView):
         pitcher=request.data.get('pitcher')
 
         #TODO
-        # user_profile = CustomUser.objects.create(
-        #     user=user,
-        #     name=name,
-        #     major=major,
-        #     grade=grade,
-        #     position=position,
-        #     pitcher=pitcher
-        # )
-        # user_profile.save()
+        user_profile = CustomUser.objects.save(
+            user=user,
+            name=name,
+            major=major,
+            grade=grade,
+            position=position,
+            pitcher=pitcher
+        )
+        user_profile.save()
 
         return set_token_on_response_cookie(user)
 
