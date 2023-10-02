@@ -21,3 +21,4 @@ class CustomUser(AbstractUser,PermissionsMixin):
 
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True, default=3)
     
+    
