@@ -25,26 +25,10 @@ class SignupStep1View(APIView):
 
 class SignupStep2View(APIView):
     def post(self,request):
-        user_id = request.data.get('user_id')
-        user = CustomUser.objects.get(id = user_id)
-        name=request.data.get('name')
-        major=request.data.get('major')
-        grade=request.data.get('grade')
-        position=request.data.get('position')
-        pitcher=request.data.get('pitcher')
-
-        #TODO
-        user_profile = CustomUser.objects.save(
-            user=user,
-            name=name,
-            major=major,
-            grade=grade,
-            position=position,
-            pitcher=pitcher
-        )
-        user_profile.save()
-
-        return set_token_on_response_cookie(user)
+        userprofile_serializer = UserProfileSerializer(request.user, data =request.data)
+        if userprofile_serializer.is_valid():
+            userprofile_serializer.save()
+        return set_token_on_response_cookie(request.user)
 
 class SigninView(APIView):
     def post(self,request):

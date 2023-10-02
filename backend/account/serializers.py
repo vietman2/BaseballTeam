@@ -23,4 +23,4 @@ class UserAuthorityCheckSerializer(ModelSerializer):
 class UserProfileSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = "__all__"
+        fields = ["is_pitcher", "is_active", "position", "grade", "major", "name"]
