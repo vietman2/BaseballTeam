@@ -9,10 +9,4 @@ describe('<MyPage />', () => {
 
     expect(screen.getByText('마이페이지 화면'));
   });
-
-  it('should fail the test', () => {
-    render(<MyPage />);
-
-    expect(screen.getByText('마이페이지 화면2'));
-  });
 });
