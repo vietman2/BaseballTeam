@@ -1,4 +1,5 @@
 from django.db import models
+from django.apps import apps
 from django.contrib.auth.base_user import BaseUserManager
 
 class UserManager(BaseUserManager):
@@ -22,7 +23,7 @@ class UserManager(BaseUserManager):
         )
         user.set_password(password)
         user.save(using=self._db)
-        
+
         return user
 
     def create_superuser(self, name, phone_number, password=None, **extra_fields):
@@ -33,10 +34,16 @@ class UserManager(BaseUserManager):
             raise ValueError('is_superuser는 True여야 합니다')
         if extra_fields.get('is_staff') is not True:
             raise ValueError('is_staff는 True여야 합니다')
-        
-        from .models import CustomUser  # Circular import 방지
-        
-        return self.create_user(CustomUser.UserType.ADMIN, name, phone_number, password, **extra_fields)
+
+        CustomUser = apps.get_model('account', 'CustomUser')    # circular import 방지
+
+        return self.create_user(
+            CustomUser.UserType.ADMIN,
+            name,
+            phone_number,
+            password,
+            **extra_fields
+        )
 
 class ActiveMembersManager(models.Manager):
     def get_queryset(self):
