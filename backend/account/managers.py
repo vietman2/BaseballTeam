@@ -49,7 +49,7 @@ class ActiveMembersManager(models.Manager):
     def get_queryset(self):
         ## UserType이 2, 3, 4, 5 인 사람들만 반환
         return super().get_queryset().filter(user_type__in=[2, 3, 4, 5])
-    
+
     ## 추후 여기에 필요한 함수 추가. 예를 들어:
     ## def get_captain(self):
     ## def get_managers(self):

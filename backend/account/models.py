@@ -37,7 +37,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
         error_messages={
             'invalid': "전화번호는 '010-xxxx-xxxx' 형식으로만 받습니다",
             'unique': '이미 존재하는 전화번호입니다'
-        }        
+        }
     )
     date_joined = models.DateTimeField(auto_now_add=True, db_comment="가입일")
     # 비밀번호는 AbstractBaseUser에 있음
