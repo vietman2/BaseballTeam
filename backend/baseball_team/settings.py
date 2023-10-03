@@ -45,10 +45,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account',
-    'participation.session',
-    'participation.attendance',
-    'participation.week',
+
+    'account.apps.AccountConfig',
+    'participation.session.apps.SessionConfig',
+    'participation.attendance.apps.AttendanceConfig',
+    'participation.week.apps.WeekConfig',
+
     'rest_framework_simplejwt',
     'rest_framework',
     'corsheaders'
@@ -99,6 +101,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = "account.CustomUser"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -159,8 +163,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN': 'access_token',
     'REFRESH_TOKEN': 'refresh_token',
 }
-
-AUTH_USER_MODEL = "account.CustomUser"
 
 CORS_ALLOWED_ORIGINS= [ # (헤더) Access-Control-Allow-Origin 에 담을 주소들
     'http://127.0.0.1:3000', 
