@@ -58,6 +58,8 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     objects = models.Manager()
     active_members = ActiveMembersManager() ## 활동중인 부원에 대한 정보를 반환하는 매니저
 
+    USERNAME_FIELD = 'phone_number'
+
     class Meta:
         db_table = 'user'
         verbose_name = 'user'
