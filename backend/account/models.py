@@ -40,6 +40,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
         }
     )
     date_joined = models.DateTimeField(auto_now_add=True, db_comment="가입일")
+    is_active = models.BooleanField(default=True, db_comment="로그인 가능 여부")
     # 비밀번호는 AbstractBaseUser에 있음
 
     ## 추가 정보
