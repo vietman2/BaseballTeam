@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import CustomUser
-from .serializers import UserProfileSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, \
+    UserPasswordChangeSerializer, UserAuthorityCheckSerializer, UserProfileSerializer
 
 def set_token_on_response_cookie(user: CustomUser) -> Response:
     ## TODO: 쿠키는 그렇다 치고, 세션은?
@@ -18,7 +19,7 @@ def set_token_on_response_cookie(user: CustomUser) -> Response:
 
 class SignupView(APIView):
     def post(self,request):
-        serializer = UserProfileSerializer(data=request.data)
+        serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.create()
             return Response({"detail": "회원가입이 완료되었습니다."}, status=status.HTTP_201_CREATED)
@@ -26,7 +27,7 @@ class SignupView(APIView):
 
 class SigninView(APIView):
     def post(self, request):
-        serializer = UserProfileSerializer(data=request.data)
+        serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
             return set_token_on_response_cookie(serializer.user)
         return Response({"detail": "로그인에 실패했습니다."}, status=status.HTTP_401_UNAUTHORIZED)
@@ -40,7 +41,7 @@ class LogoutView(APIView):
 
 class PasswordChangeView(APIView):
     def post(self, request):
-        serializer = UserProfileSerializer(data=request.data)
+        serializer = UserPasswordChangeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.update_password()
             return Response({"detail": "비밀번호가 변경되었습니다."}, status=status.HTTP_200_OK)
@@ -48,7 +49,7 @@ class PasswordChangeView(APIView):
 
 class AuthorityCheckView(APIView):
     def get(self, request):
-        serializer = UserProfileSerializer(data=request.data)
+        serializer = UserAuthorityCheckSerializer(data=request.data)
         if serializer.is_valid():
             return Response({"detail": "권한이 확인되었습니다."}, status=status.HTTP_200_OK)
         return Response({"detail": "권한이 없습니다."}, status=status.HTTP_401_UNAUTHORIZED)
