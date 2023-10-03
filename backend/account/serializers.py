@@ -12,7 +12,7 @@ class UserRegisterSerializer(ModelSerializer):
         user = CustomUser.objects.create_user(**validated_data)
         return user
 
-    def validate(self, attrs):
+    def validate_phone_number(self, attrs):
         if attrs["user_type"] == 1:
             raise ValidationError("관리자는 직접 생성할 수 없습니다")
         ## 클라이언트에서 전화번호가 - 없이 010xxxxyyyy 형태로 들어오면
