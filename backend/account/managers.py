@@ -45,6 +45,35 @@ class UserManager(BaseUserManager):
             **extra_fields
         )
 
+    def update_user(self, user, **extra_fields):
+        if not user:
+            raise ValueError('유저가 존재하지 않습니다')
+
+        for key, value in extra_fields.items():
+            setattr(user, key, value)
+        user.save(using=self._db)
+
+        return user
+    
+    def update_password(self, user, password):
+        if not user:
+            raise ValueError('유저가 존재하지 않습니다')
+
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+    
+    def delete_user(self, user):
+        ## 실제로 삭제하지 말고, is_active를 False로 바꾸는 것으로 대체
+        if not user:
+            raise ValueError('유저가 존재하지 않습니다')
+        
+        user.is_active = False
+        user.save(using=self._db)
+
+        return user
+
 class ActiveMembersManager(models.Manager):
     def get_queryset(self):
         ## UserType이 2, 3, 4, 5 인 사람들만 반환
