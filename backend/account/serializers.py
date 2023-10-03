@@ -19,7 +19,7 @@ class UserRegisterSerializer(ModelSerializer):
         ## 여기서 -를 붙여주도록 구현
         phone_number = attrs["phone_number"]
         if phone_number.find("-") == -1:
-            attrs["phone_number"] = phone_number[:3] + "-" + phone_number[3:7] 
+            attrs["phone_number"] = phone_number[:3] + "-" + phone_number[3:7]
             attrs["phone_number"] = attrs["phone_number"] + "-" + phone_number[7:]
 
         return attrs
