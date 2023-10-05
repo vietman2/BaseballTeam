@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-import os
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -40,8 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'account',
-    "phonenumber_field",
+    'participation.session',
+    'participation.attendance',
+    'participation.week',
+
     'rest_framework_simplejwt',
     'rest_framework',
     'corsheaders'
@@ -92,6 +96,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = "account.CustomUser"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -152,8 +158,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN': 'access_token',
     'REFRESH_TOKEN': 'refresh_token',
 }
-
-AUTH_USER_MODEL = "account.CustomUser"
 
 CORS_ALLOWED_ORIGINS= [ # (헤더) Access-Control-Allow-Origin 에 담을 주소들
     'http://127.0.0.1:3000', 
