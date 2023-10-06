@@ -33,4 +33,3 @@ class Attendance(models.Model):
     is_coming = models.BooleanField(default=False)
     start_time = models.TimeField(null=True, blank=True)
     end_time = models.TimeField(null=True, blank=True)
-
