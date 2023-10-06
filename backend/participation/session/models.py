@@ -14,7 +14,7 @@ class Session(models.Model):
     day = models.IntegerField(choices=DayChoices.choices)
     start_time = models.TimeField()
     end_time = models.TimeField()
-    training_type = models.ForeignKey("TrainingType", on_delete=models.SET_NULL, related_name='sessions')
+    training_type = models.ForeignKey("TrainingType", on_delete=models.DO_NOTHING, related_name='sessions')
 
     class Meta:
         ordering = ['date', 'start_time']
