@@ -28,7 +28,7 @@ class TrainingType(models.Model):
     description = models.TextField(blank=True, null=True)
 
 class Attendance(models.Model):
-    user = models.ForeignKey("CustomUser", on_delete=models.CASCADE)
+    user = models.ForeignKey("account.CustomUser", on_delete=models.CASCADE)
     session = models.ForeignKey("Session", on_delete=models.CASCADE)
     is_coming = models.BooleanField(default=False)
     start_time = models.TimeField(null=True, blank=True)
