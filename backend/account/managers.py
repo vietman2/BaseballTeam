@@ -44,6 +44,12 @@ class UserManager(BaseUserManager):
 
         return user
 
+    def update_password(self, user, password):
+        user.set_password(password)
+        user.save(using=self._db)
+        
+        return user
+    
     def update_user(self, user, **extra_fields):
         if not user:
             raise ValueError('유저가 존재하지 않습니다')
@@ -54,16 +60,6 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def update_password(self, user, password):
-        if not user:
-            raise ValueError('유저가 존재하지 않습니다')
-
-        user.set_password(password)
-        user.save(using=self._db)
-
-        print("HaHAhAha")
-
-        return user
 
     def delete_user(self, user):
         ## 실제로 삭제하지 말고, is_active를 False로 바꾸는 것으로 대체
