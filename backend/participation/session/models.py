@@ -1,7 +1,7 @@
 from django.db import models
 
 class Session(models.Model):
-    class DayChoices(models.TextChoices):
+    class DayChoices(models.IntegerChoices):
         MONDAY = 1, "월요일"
         TUESDAY = 2, "화요일"
         WEDNESDAY = 3, "수요일"
@@ -11,7 +11,7 @@ class Session(models.Model):
         SUNDAY = 7, "일요일"
 
     date = models.DateField()
-    day = models.IntegerChoices(choices=DayChoices.choices)
+    day = models.IntegerField(choices=DayChoices.choices)
     start_time = models.TimeField()
     end_time = models.TimeField()
     training_type = models.ForeignKey("TrainingType", on_delete=models.SET_NULL, related_name='sessions')
