@@ -1,4 +1,3 @@
-from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from .models import CustomUser
@@ -18,7 +17,7 @@ class UserRegisterSerializer(ModelSerializer):
         
         return user
 
-"""
+'''
 class ChangePasswordSerializer(ModelSerializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
@@ -42,8 +41,8 @@ class ChangePasswordSerializer(ModelSerializer):
         user = self.context["request"].user
         user.set_password(self.validated_data["new_password"])
         user.save()
-"""
-        
+'''
+
 class UserProfileSerializer(ModelSerializer):
     class Meta:
         model = CustomUser

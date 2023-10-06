@@ -51,17 +51,33 @@ class RegisterAPITestCase(APITestCase):
         self.assertEqual(created_user.position, 0)
 
     def test_registration_success_superuser(self):
-        call_command("createsuperuser", name="admin", phone_number="010-1234-4321", interactive=False)
+        call_command(
+            "createsuperuser",
+            name="admin",
+            phone_number="010-1234-4321",
+            interactive=False
+        )
 
         created_user = CustomUser.objects.get(phone_number="010-1234-4321")
         self.assertEqual(created_user.user_type, 1)
         self.assertTrue(created_user.is_superuser)
 
     def test_registration_fail(self):
+        ## 잘못된 전화번호 형식.
         self.data["phone_number"] = "010-1234-56789"
         response = self.client.post("/api/account/register/", data=self.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(CustomUser.objects.filter(phone_number="010-1234-56789").exists())
+
+        self.data["phone_number"] = "01012345678"
+        response = self.client.post("/api/account/register/", data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertFalse(CustomUser.objects.filter(phone_number="01012345678").exists())
+
+        self.data["phone_number"] = "010 1234 1234"
+        response = self.client.post("/api/account/register/", data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertFalse(CustomUser.objects.filter(phone_number="010 1234 1234").exists())
 
 """
 class ChangePasswordAPITestCase(APITestCase):

@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
 
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('is_superuser는 True여야 합니다')
-        
+
         CustomUser = apps.get_model('account', 'CustomUser')
 
         user = self.model(
