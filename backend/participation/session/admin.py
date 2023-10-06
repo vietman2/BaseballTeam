@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Session, TrainingType
+
+admin.site.register(Session)
+admin.site.register(TrainingType)

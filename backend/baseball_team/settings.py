@@ -43,7 +43,6 @@ INSTALLED_APPS = [
 
     'account',
     'participation.session',
-    'participation.attendance',
     'participation.week',
 
     'rest_framework_simplejwt',
