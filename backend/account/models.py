@@ -49,7 +49,8 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     ## 추가 정보
     major = models.CharField(
         max_length=32,
-        db_comment="학부/학과명. 개발의 편의를 위해 CharField로 받고, 형식은 자유. 단, 비어있으면 안됨"
+        db_comment="학부/학과명. 개발의 편의를 위해 CharField로 받고, 형식은 자유. 단, 비어있으면 안됨",
+        default="전공없음",
     )
     grade = models.IntegerField(
         default=1,
@@ -62,6 +63,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     active_members = ActiveMembersManager() ## 활동중인 부원에 대한 정보를 반환하는 매니저
 
     USERNAME_FIELD = 'phone_number'
+    REQUIRED_FIELDS = ['name']
 
     class Meta:
         db_table = 'user'
