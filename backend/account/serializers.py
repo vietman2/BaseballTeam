@@ -34,11 +34,11 @@ class ChangePasswordSerializer(ModelSerializer):
         user = self.context["request"].user
         if not user.check_password(value):
             raise serializers.ValidationError("기존 비밀번호가 일치하지 않습니다")
-    
+
     def validate_new_password(self, value):
         if value == self.context["request"].data["old_password"]:
             raise serializers.ValidationError("기존 비밀번호와 동일합니다")
-        
+
         validate_password(value)
 
     def save(self, **kwargs):
@@ -46,8 +46,7 @@ class ChangePasswordSerializer(ModelSerializer):
             user=self.context["request"].user,
             password=self.context["request"].data["new_password"]
         )
-
-        return user        
+        return user
 
 class UserProfileSerializer(ModelSerializer):
     class Meta:

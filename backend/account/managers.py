@@ -47,9 +47,9 @@ class UserManager(BaseUserManager):
     def update_password(self, user, password):
         user.set_password(password)
         user.save(using=self._db)
-        
+
         return user
-    
+
     def update_user(self, user, **extra_fields):
         if not user:
             raise ValueError('유저가 존재하지 않습니다')
