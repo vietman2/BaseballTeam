@@ -20,6 +20,17 @@ class UserRegisterSerializer(ModelSerializer):
         )
         return user
 
+class ChangePasswordSerializer(ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["password"]
+        extra_kwargs = {"password": {"write_only": True}}
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data["password"])
+        instance.save()
+        return instance
+
 class UserProfileSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
