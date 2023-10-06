@@ -78,4 +78,3 @@ class RegisterAPITestCase(APITestCase):
         response = self.client.post("/api/account/register/", data=self.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(CustomUser.objects.filter(phone_number="010 1234 1234").exists())
-
