@@ -14,34 +14,8 @@ class UserRegisterSerializer(ModelSerializer):
         user = CustomUser.objects.create_user(
             **validated_data,
         )
-        
+
         return user
-
-'''
-class ChangePasswordSerializer(ModelSerializer):
-    old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True)
-
-    class Meta:
-        model = CustomUser
-        fields = ["old_password", "new_password"]
-
-    def validate_old_password(self, value):
-        user = self.context["request"].user
-        if not user.check_password(value):
-            raise serializers.ValidationError("기존 비밀번호가 일치하지 않습니다")
-        return value
-    
-    def validate_new_password(self, value):
-        if len(value) < 8:
-            raise serializers.ValidationError("비밀번호는 8자 이상이어야 합니다")
-        return value
-
-    def save(self, **kwargs):
-        user = self.context["request"].user
-        user.set_password(self.validated_data["new_password"])
-        user.save()
-'''
 
 class UserProfileSerializer(ModelSerializer):
     class Meta:
