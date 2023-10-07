@@ -9,14 +9,13 @@ class UserManager(BaseUserManager):
         create()나 save()를 사용하면 비밀번호가 암호화되지 않음.
         관리자를 생성할 때는 CustomUser.objects.create_superuser() 사용
     """
-    def create_user(self, user_type, name, phone_number, password=None, **extra_fields):
+    def create_user(self, name, phone_number, password=None, **extra_fields):
         if not phone_number:
             raise ValueError('전화번호는 필수입니다')
         if not name:
             raise ValueError('이름은 필수입니다')
 
         user = self.model(
-            user_type=user_type,
             name=name,
             phone_number=phone_number,
             **extra_fields
@@ -28,22 +27,22 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, name, phone_number, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_staff', True)
 
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('is_superuser는 True여야 합니다')
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('is_staff는 True여야 합니다')
 
-        CustomUser = apps.get_model('account', 'CustomUser')    # circular import 방지
+        CustomUser = apps.get_model('account', 'CustomUser')
 
-        return self.create_user(
-            CustomUser.UserType.ADMIN,
-            name,
-            phone_number,
-            password,
+        user = self.model(
+            name=name,
+            phone_number=phone_number,
             **extra_fields
         )
+        user.set_password(password)
+        user.user_type = CustomUser.UserType.ADMIN
+        user.save(using=self._db)
+
+        return user
 
     def update_user(self, user, **extra_fields):
         if not user:
@@ -61,6 +60,8 @@ class UserManager(BaseUserManager):
 
         user.set_password(password)
         user.save(using=self._db)
+
+        print("HaHAhAha")
 
         return user
 

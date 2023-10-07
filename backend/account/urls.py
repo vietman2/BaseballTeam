@@ -1,13 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 
-from .views import SignupView, SigninView, LogoutView, AuthorityCheckView
+from .views import RegisterView, UserProfileView #, ChangePasswordView
 
-app_name = 'account'
 urlpatterns = [
-    path("signup/", SignupView.as_view()),
-    path("signin/", SigninView.as_view()),
-    path("logout/", LogoutView.as_view()),
-    # path("change_password/", PasswordChangeView.as_view()),
-    path("check/", AuthorityCheckView.as_view()),
-    # path("profile/", UserProfileView.as_view()),
+    path("register/", RegisterView.as_view(), name="register"),
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    # path("change-password/", ChangePasswordView.as_view(), name="change-password"),
+    path("user/", UserProfileView.as_view(), name="user"),
 ]
