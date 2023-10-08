@@ -21,6 +21,14 @@ class RegisterAPITestCase(APITestCase):
             "phone_number": "010-1234-5678",
             "password": "testpassword1234",
         }
+        self.no_phone_number = {
+            "name": "테스트",
+            "password": "testpassword1234",
+        }
+        self.no_name = {
+            "phone_number": "010-1234-5678",
+            "password": "testpassword1234",
+        }
 
     def test_registration_success(self):
         self.assertEqual(CustomUser.objects.count(), 0)
@@ -79,6 +87,15 @@ class RegisterAPITestCase(APITestCase):
         response = self.client.post("/api/account/register/", data=self.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(CustomUser.objects.filter(phone_number="010 1234 1234").exists())
+
+        ## 정보 누락
+        response = self.client.post("/api/account/register/", data=self.no_phone_number)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        ## check ValueError
+        self.assertFalse(CustomUser.objects.filter(phone_number="010-1234-5678").exists())
+
+        response = self.client.post("/api/account/register/", data=self.no_name)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 class ChangePasswordAPITestCase(APITestCase):
     ## Test cases for changing password
