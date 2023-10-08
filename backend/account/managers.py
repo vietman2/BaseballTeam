@@ -10,11 +10,6 @@ class UserManager(BaseUserManager):
         관리자를 생성할 때는 CustomUser.objects.create_superuser() 사용
     """
     def create_user(self, name, phone_number, password=None, **extra_fields):
-        if not phone_number:
-            raise ValueError('전화번호는 필수입니다')
-        if not name:
-            raise ValueError('이름은 필수입니다')
-
         user = self.model(
             name=name,
             phone_number=phone_number,
@@ -27,9 +22,6 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, name, phone_number, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
-
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('is_superuser는 True여야 합니다')
 
         CustomUser = apps.get_model('account', 'CustomUser')
 
@@ -51,15 +43,11 @@ class UserManager(BaseUserManager):
         return user
 
     def update_user(self, user, **extra_fields):
-        if not user:
-            raise ValueError('유저가 존재하지 않습니다')
-
         for key, value in extra_fields.items():
             setattr(user, key, value)
         user.save(using=self._db)
 
         return user
-
 
     def delete_user(self, user):
         ## 실제로 삭제하지 말고, is_active를 False로 바꾸는 것으로 대체
