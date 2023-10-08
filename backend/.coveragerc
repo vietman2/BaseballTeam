@@ -2,3 +2,6 @@
 relative_files = True
 source = .
 branch = True
+
+[report]
+show_missing=True
