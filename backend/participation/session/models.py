@@ -2,18 +2,18 @@ from django.db import models
 
 class Session(models.Model):
     class DayChoices(models.IntegerChoices):
-        MONDAY = 1, "월요일"
-        TUESDAY = 2, "화요일"
-        WEDNESDAY = 3, "수요일"
-        THURSDAY = 4, "목요일"
-        FRIDAY = 5, "금요일"
-        SATURDAY = 6, "토요일"
-        SUNDAY = 7, "일요일"
+        MON = 1, "월요일"
+        TUE = 2, "화요일"
+        WED = 3, "수요일"
+        THU = 4, "목요일"
+        FRI = 5, "금요일"
+        SAT = 6, "토요일"
+        SUN = 7, "일요일"
 
-    date = models.DateField()
-    day = models.IntegerField(choices=DayChoices.choices)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    date = models.DateField(db_comment="훈련 날짜")
+    day = models.IntegerField(choices=DayChoices.choices, db_comment="훈련 요일")
+    start_time = models.TimeField(db_comment="훈련 시작 시간")
+    end_time = models.TimeField(db_comment="훈련 종료 시간")
     training_type = models.ForeignKey("TrainingType", on_delete=models.DO_NOTHING, related_name='sessions')
 
     class Meta:
