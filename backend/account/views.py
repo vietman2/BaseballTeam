@@ -29,6 +29,7 @@ class RegisterView(CreateAPIView):
 class ChangePasswordView(UpdateAPIView):
     serializer_class = ChangePasswordSerializer
     permission_classes = [IsAuthenticated,]
+    http_method_names = ['put',]
 
     def update(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
