@@ -1,49 +1,48 @@
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.serializers import ValidationError
+from django.utils.datastructures import MultiValueDictKeyError
 
-from .models import CustomUser
-from .serializers import UserRegisterSerializer, UserLoginSerializer, \
-    UserAuthorityCheckSerializer, UserProfileSerializer
+from .serializers import UserRegisterSerializer, UserProfileSerializer, ChangePasswordSerializer
 
-def set_token_on_response_cookie(user: CustomUser) -> Response:
-    ## TODO: 쿠키는 그렇다 치고, 세션은?
-    token = RefreshToken.for_user(user)
-    user_profile = CustomUser.objects.get(user=user)
-    user_profile_serializer = UserProfileSerializer(user_profile)
-    res = Response(user_profile_serializer.data, status=status.HTTP_200_OK)
-    res.set_cookie('refresh_token', value=str(token), httponly=True)
-    res.set_cookie('access_token', value=str(token.access_token), httponly=True)
-    return res
+class RegisterView(CreateAPIView):
+    serializer_class = UserRegisterSerializer
 
-class SignupView(APIView):
-    def post(self,request):
-        serializer = UserRegisterSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.validate_phone_number(serializer.validated_data)
-            user = serializer.create()
-            return set_token_on_response_cookie(user)
-        return Response({"detail": "회원가입에 실패했습니다."}, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
 
-class SigninView(APIView):
-    def post(self, request):
-        serializer = UserLoginSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.validate(serializer.validated_data)
-            return set_token_on_response_cookie(user)
-        return Response({"detail": "로그인에 실패했습니다."}, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-class LogoutView(APIView):
-    def post(self, request):
-        res = Response({"detail": "로그아웃되었습니다."}, status=status.HTTP_200_OK)
-        res.delete_cookie('refresh_token')
-        res.delete_cookie('access_token')
-        return res
+        try :
+            super().post(request, *args, **kwargs)
+        except ValidationError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-class AuthorityCheckView(APIView):
-    def get(self, request):
-        serializer = UserAuthorityCheckSerializer(data=request.data)
-        if serializer.is_valid():
-            return Response({"detail": "권한이 확인되었습니다."}, status=status.HTTP_200_OK)
-        return Response({"detail": "권한이 없습니다."}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(None, status=status.HTTP_201_CREATED)
+
+class ChangePasswordView(UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [IsAuthenticated,]
+    http_method_names = ['put',]
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except MultiValueDictKeyError:
+            return Response({"detail": "기존 비밀번호를 입력해주세요"}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.save()
+        return Response({"detail": "비밀번호가 변경되었습니다"}, status=status.HTTP_200_OK)
+
+class UserProfileView(APIView):
+    serializer_class = UserProfileSerializer
