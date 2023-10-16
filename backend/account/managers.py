@@ -53,20 +53,52 @@ class UserManager(BaseUserManager):
         ## 실제로 삭제하지 말고, is_active를 False로 바꾸는 것으로 대체
         if not user:
             raise ValueError('유저가 존재하지 않습니다')
+        
+        CustomUser = apps.get_model('account', 'CustomUser')
 
         user.is_active = False
+        user.user_type = CustomUser.UserType.DELETED
         user.save(using=self._db)
 
         return user
+
+    def set_captain(self, user):
+        if not user:
+            raise ValueError('유저가 존재하지 않습니다')
+
+        user.user_type = user.UserType.CAPTAIN
+        user.save(using=self._db)
+
+        return user
+    
+    def set_vice_captain(self, user):
+        if not user:
+            raise ValueError('유저가 존재하지 않습니다')
+
+        user.user_type = user.UserType.VICE_CAPTAIN
+        user.save(using=self._db)
+
+        return user
+    
+    def handover_leadership(self, old_captain, old_vice_captain, new_captain, new_vice_captain):
+        if not old_captain or not old_vice_captain or not new_captain or not new_vice_captain:
+            raise ValueError('유저가 존재하지 않습니다')
+
+        old_captain.user_type = old_captain.UserType.MEMBER
+        old_captain.save(using=self._db)
+
+        old_vice_captain.user_type = old_vice_captain.UserType.MEMBER
+        old_vice_captain.save(using=self._db)
+
+        new_captain.user_type = new_captain.UserType.CAPTAIN
+        new_captain.save(using=self._db)
+
+        new_vice_captain.user_type = new_vice_captain.UserType.VICE_CAPTAIN
+        new_vice_captain.save(using=self._db)
+
+        return old_captain, old_vice_captain, new_captain, new_vice_captain
 
 class ActiveMembersManager(models.Manager):
     def get_queryset(self):
         ## UserType이 2, 3, 4, 5 인 사람들만 반환
         return super().get_queryset().filter(user_type__in=[2, 3, 4, 5])
-
-    ## 추후 여기에 필요한 함수 추가. 예를 들어:
-    ## def get_captain(self):
-    ## def get_managers(self):
-    ## def get_pitchers(self):
-    ## def is_pitcher(self, user): 등등
-    ## 너무 많아지면 추후에 managers.py로 빼도 됨

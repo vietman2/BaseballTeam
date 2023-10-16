@@ -48,7 +48,7 @@ class ChangePasswordSerializer(ModelSerializer):
         )
         return user
 
-class UserProfileSerializer(ModelSerializer):
+class UserSimpleSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ["name", "phone_number", "major", "grade", "position"]
