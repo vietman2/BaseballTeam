@@ -35,24 +35,24 @@ export default function Login({ navigation }: Props) {
     navigation.navigate("SignUp");
   };
 
-  const TextInputFields = () => {
-    return (
-      <View style={containerStyles.textInputContainer}>
-        <TextInput
-          style={viewStyles.textInputField}
-          placeholder="아이디"
-          onChangeText={(text) => setUsername(text)}
-          value={username}
-        />
-        <TextInput
-          style={viewStyles.textInputField}
-          placeholder="비밀번호"
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-        />
-      </View>
-    );
-  };
+  // const TextInputFields = () => {
+  //   return (
+  //     <View style={containerStyles.textInputContainer}>
+  //       <TextInput
+  //         style={viewStyles.textInputField}
+  //         placeholder="아이디"
+  //         onChangeText={(text) => setUsername(text)}
+  //         value={username}
+  //       />
+  //       <TextInput
+  //         style={viewStyles.textInputField}
+  //         placeholder="비밀번호"
+  //         onChangeText={(text) => setPassword(text)}
+  //         value={password}
+  //       />
+  //     </View>
+  //   );
+  // };
 
   const Buttons = () => {
     return (
@@ -75,7 +75,20 @@ export default function Login({ navigation }: Props) {
       enabled
     >
       <TopBox title="로그인" />
-      <TextInputFields />
+      <View style={containerStyles.textInputContainer}>
+        <TextInput
+          style={viewStyles.textInputField}
+          placeholder="아이디"
+          onChangeText={(text) => setUsername(text)}
+          value={username}
+        />
+        <TextInput
+          style={viewStyles.textInputField}
+          placeholder="비밀번호"
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+        />
+      </View>
       <Buttons />
     </KeyboardAvoidingView>
   );
