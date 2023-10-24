@@ -34,7 +34,7 @@ class TrainingType(models.Model):
         db_table_comment = "훈련 유형"
 
 class Attendance(models.Model):
-    user = models.ForeignKey("account.CustomUser", on_delete=models.CASCADE)
+    user = models.ForeignKey("user.CustomUser", on_delete=models.CASCADE)
     session = models.ForeignKey("Session", on_delete=models.CASCADE)
     is_coming = models.BooleanField(default=False)
     start_time = models.TimeField(null=True, blank=True)
