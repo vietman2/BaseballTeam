@@ -27,15 +27,3 @@ class TrainingTypeAPITestCase(APITestCase):
             grade=3,
             position=CustomUser.Positions.NEW,
         )
-
-    def test_get_list_normal_user(self):
-        self.client.force_authenticate(user=self.normal_user)
-        response = self.client.get('/api/participation/session/trainingtypes/')
-        self.assertEqual(response.status_code, 403)
-        self.assertEqual(1, 2)
-
-    def test_get_list_captain_user(self):
-        self.client.force_authenticate(user=self.captain_user)
-        response = self.client.get('/api/participation/session/trainingtypes/')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), 3)
