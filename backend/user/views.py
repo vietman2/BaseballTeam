@@ -7,9 +7,13 @@ from rest_framework.serializers import ValidationError
 from drf_spectacular.utils import extend_schema
 from dj_rest_auth.views import LoginView, LogoutView
 
-from .serializers import UserRegisterSerializer, UserProfileSerializer, PasswordChangeSerializer
+from .serializers import (
+    UserRegisterSerializer, UserProfileSerializer,
+    PasswordChangeSerializer, HandoverSerializer,
+    UserManagementSerializer, StatusChangeSerializer
+)
 from .models import CustomUser
-from .permissions import IsSelf
+from .permissions import IsSelf, IsCaptain, IsLeadership
 
 class UserViewSet(ModelViewSet):
     queryset = CustomUser.active_members.get_queryset()
@@ -31,7 +35,7 @@ class UserViewSet(ModelViewSet):
 
     @extend_schema(summary="회원 리스트 조회", tags=["회원 관리"])
     def list(self, request, *args, **kwargs):
-        serializer = self.get_serializer(self.get_queryset(), many=True)
+        serializer = UserManagementSerializer(self.get_queryset(), many=True)
         return Response(serializer.data)
 
     @extend_schema(summary="회원 정보 수정", tags=["회원 관리"])
@@ -94,6 +98,42 @@ class UserViewSet(ModelViewSet):
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({"detail": "비밀번호가 변경되었습니다"}, status=status.HTTP_200_OK)
+
+    @extend_schema(summary="주장단 인수인계", tags=["회원 관리"])
+    @action(
+        detail=False,
+        methods=["post"],
+        serializer_class=HandoverSerializer,
+        permission_classes=[IsAuthenticated, IsCaptain]
+    )
+    def handover_leadership(self, request):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+        except ValidationError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"detail": "주장단 인수인계가 완료되었습니다"}, status=status.HTTP_200_OK)
+
+    @extend_schema(summary="회원 유형 변경", tags=["회원 관리"])
+    @action(
+        detail=False,
+        methods=["patch"],
+        serializer_class=StatusChangeSerializer,
+        permission_classes=[IsAuthenticated, IsLeadership]
+    )
+    def change_status(self, request):
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+        except ValidationError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        return Response({"detail": "회원 유형이 변경되었습니다"}, status=status.HTTP_200_OK)
 
 class MyLoginView(LoginView):
     @extend_schema(summary="로그인", tags=["회원 관리"])

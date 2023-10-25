@@ -491,3 +491,206 @@ class UserAPITestCase(APITestCase):
         # validation error
         response = self.client.patch("/api/users/1/", data={"name": ""})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+class HandoverAPITestCase(APITestCase):
+    def setUp(self):
+        self.old_captain = CustomUser.objects.create_user(
+            phone_number="010-1234-5678",
+            password="oldcaptain1234",
+            freshman_year=2018,
+            user_type=2,
+            name="기존주장",
+            major="체육교육과",
+            grade=4,
+            position=3
+        )
+        self.new_captain = CustomUser.objects.create_user(
+            phone_number="010-1234-4321",
+            password="newcaptain1234",
+            freshman_year=2019,
+            user_type=5,
+            name="새로운주장",
+            major="수학교육과",
+            grade=3,
+            position=6
+        )
+        self.old_vice_captain = CustomUser.objects.create_user(
+            phone_number="010-1234-1234",
+            password="oldvicecaptain1234",
+            freshman_year=2018,
+            user_type=3,
+            name="기존부주장",
+            major="체육교육과",
+            grade=4,
+            position=3
+        )
+        self.new_vice_captain = CustomUser.objects.create_user(
+            phone_number="010-1234-9876",
+            password="newvicecaptain1234",
+            freshman_year=2019,
+            user_type=5,
+            name="새로운부주장",
+            major="수학교육과",
+            grade=3,
+            position=6
+        )
+        self.url = "/api/users/handover_leadership/"
+        self.data = {
+            "old_captain": "010-1234-5678",
+            "new_captain": "010-1234-4321",
+            "old_vice_captain": "010-1234-1234",
+            "new_vice_captain": "010-1234-9876",
+        }
+
+    def test_unallowed_methods(self):
+        self.client.force_authenticate(user=self.old_captain)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        response = self.client.patch(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        response = self.client.put(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_handover_success(self):
+        self.client.force_authenticate(user=self.old_captain)
+        response = self.client.post(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.old_captain.refresh_from_db()
+        self.new_captain.refresh_from_db()
+        self.old_vice_captain.refresh_from_db()
+        self.new_vice_captain.refresh_from_db()
+
+        self.assertEqual(self.old_captain.user_type, 5)
+        self.assertEqual(self.new_captain.user_type, 2)
+        self.assertEqual(self.old_vice_captain.user_type, 5)
+        self.assertEqual(self.new_vice_captain.user_type, 3)
+
+    def test_handover_failure(self):
+        # 1. not logged in
+        response = self.client.post(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        # 2. not captain
+        self.client.force_authenticate(user=self.new_captain)
+        response = self.client.post(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        # 3. wrong captain
+        self.client.force_authenticate(user=self.old_captain)
+        self.data["old_captain"] = "010-1234-4321"
+        response = self.client.post(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # 4. wrong vice captain
+        self.data["old_captain"] = "010-1234-5678"
+        self.data["old_vice_captain"] = "010-1234-4321"
+        response = self.client.post(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # 5. not exist
+        self.data["old_captain"] = "010-1234-5678"
+        self.data["old_vice_captain"] = "010-1234-1234"
+        self.data["new_captain"] = "010-0000-4321"
+        response = self.client.post(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        self.data["new_captain"] = "010-1234-4321"
+        self.data["new_vice_captain"] = "010-0000-9876"
+        response = self.client.post(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+class StatusChangeAPITestCase(APITestCase):
+    def setUp(self):
+        self.captain = CustomUser.objects.create_user(
+            phone_number="010-1234-5678",
+            password="captain1234",
+            freshman_year=2018,
+            user_type=2,
+            name="주장",
+            major="체육교육과",
+            grade=4,
+            position=3
+        )
+        self.manager = CustomUser.objects.create_user(
+            phone_number="010-1234-4321",
+            password="manager1234",
+            freshman_year=2019,
+            user_type=4,
+            name="매니저",
+            major="수학교육과",
+            grade=3,
+            position=6
+        )
+        self.player = CustomUser.objects.create_user(
+            phone_number="010-1234-1234",
+            password="player1234",
+            freshman_year=2019,
+            user_type=5,
+            name="선수",
+            major="수학교육과",
+            grade=3,
+            position=6
+        )
+        self.url = "/api/users/change_status/"
+        self.data = {
+            "new_status": "MILITARY",
+            "phone_number": "010-1234-1234"
+        }
+
+    def test_unallowed_methods(self):
+        self.client.force_authenticate(user=self.captain)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        response = self.client.put(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_status_change_success(self):
+        self.client.force_authenticate(user=self.captain)
+        response = self.client.patch(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.player.refresh_from_db()
+        self.assertEqual(self.player.user_type, 6)
+
+    def test_status_change_success_manager(self):
+        self.client.force_authenticate(user=self.manager)
+        response = self.client.patch(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.player.refresh_from_db()
+        self.assertEqual(self.player.user_type, 6)
+
+    def test_status_change_failure(self):
+        # 1. not logged in
+        response = self.client.patch(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        # 2. not leadership
+        self.client.force_authenticate(user=self.player)
+        response = self.client.patch(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        # 3. wrong user
+        self.client.force_authenticate(user=self.captain)
+        self.data["phone_number"] = "010-0000-4321"
+        response = self.client.patch(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # 4. wrong status
+        self.data["phone_number"] = "010-1234-1234"
+        self.data["new_status"] = "wrongstatus"
+        response = self.client.patch(self.url, data=self.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
