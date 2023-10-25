@@ -95,9 +95,101 @@ class UserProfileSerializer(ModelSerializer):
         fields = [
             "name",
             "phone_number",
-            "user_type",
             "freshman_year",
             "major",
             "grade",
             "position",
         ]
+
+class HandoverSerializer(ModelSerializer):
+    old_captain = serializers.ModelField(
+        model_field=CustomUser._meta.get_field("phone_number")
+    )
+    new_captain = serializers.ModelField(
+        model_field=CustomUser._meta.get_field("phone_number")
+    )
+    old_vice_captain = serializers.ModelField(
+        model_field=CustomUser._meta.get_field("phone_number")
+    )
+    new_vice_captain = serializers.ModelField(
+        model_field=CustomUser._meta.get_field("phone_number")
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ["old_captain", "new_captain", "old_vice_captain", "new_vice_captain"]
+
+    def validate_old_captain(self, value):
+        if not CustomUser.objects.filter(
+            phone_number=value,
+            user_type=CustomUser.UserType.CAPTAIN
+        ).exists():
+            raise serializers.ValidationError("주장이 아닙니다")
+
+        return value
+
+    def validate_new_captain(self, value):
+        if not CustomUser.objects.filter(phone_number=value).exists():
+            raise serializers.ValidationError("전화번호가 존재하지 않습니다")
+
+        return value
+
+    def validate_old_vice_captain(self, value):
+        if not CustomUser.objects.filter(
+            phone_number=value,
+            user_type=CustomUser.UserType.VICE_CAPTAIN
+        ).exists():
+            raise serializers.ValidationError("부주장이 아닙니다")
+
+        return value
+
+    def validate_new_vice_captain(self, value):
+        if not CustomUser.objects.filter(phone_number=value).exists():
+            raise serializers.ValidationError("전화번호가 존재하지 않습니다")
+
+        return value
+
+    def save(self, **kwargs):
+        CustomUser.objects.handover_leadership(self.validated_data)
+        return self.validated_data
+
+class UserManagementSerializer(ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = [
+            "id",
+            "name",
+            "phone_number",
+            "freshman_year",
+            "major",
+            "grade",
+            "position",
+            "user_type",
+            "date_joined",
+            "last_login",
+            "is_active",
+        ]
+
+class StatusChangeSerializer(ModelSerializer):
+    new_status = serializers.CharField(required=True)
+    phone_number = serializers.CharField(required=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ["phone_number", "new_status"]
+
+    def validate_new_status(self, value):
+        if value not in CustomUser.UserType.names:
+            raise serializers.ValidationError("유저 유형이 올바르지 않습니다")
+
+        return value
+
+    def validate_phone_number(self, value):
+        if not CustomUser.objects.filter(phone_number=value).exists():
+            raise serializers.ValidationError("전화번호가 존재하지 않습니다")
+
+        return value
+
+    def save(self, **kwargs):
+        CustomUser.objects.change_user_type(self.validated_data)
+        return self.validated_data

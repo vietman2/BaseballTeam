@@ -46,23 +46,37 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def handover_leadership(self, old_captain, old_vice_captain, new_captain, new_vice_captain):
-        if not old_captain or not old_vice_captain or not new_captain or not new_vice_captain:
-            raise ValueError('유저가 존재하지 않습니다')
+    def handover_leadership(self, data):
+        old_captain = self.get(phone_number=data['old_captain'])
+        old_vice_captain = self.get(phone_number=data['old_vice_captain'])
+        new_captain = self.get(phone_number=data['new_captain'])
+        new_vice_captain = self.get(phone_number=data['new_vice_captain'])
 
-        old_captain.user_type = old_captain.UserType.MEMBER
+        CustomUser = apps.get_model('user', 'CustomUser')
+
+        old_captain.user_type = CustomUser.UserType.MEMBER
         old_captain.save(using=self._db)
 
-        old_vice_captain.user_type = old_vice_captain.UserType.MEMBER
+        old_vice_captain.user_type = CustomUser.UserType.MEMBER
         old_vice_captain.save(using=self._db)
 
-        new_captain.user_type = new_captain.UserType.CAPTAIN
+        new_captain.user_type = CustomUser.UserType.CAPTAIN
         new_captain.save(using=self._db)
 
-        new_vice_captain.user_type = new_vice_captain.UserType.VICE_CAPTAIN
+        new_vice_captain.user_type = CustomUser.UserType.VICE_CAPTAIN
         new_vice_captain.save(using=self._db)
 
         return old_captain, old_vice_captain, new_captain, new_vice_captain
+
+    def change_user_type(self, data):
+        user = self.get(phone_number=data['phone_number'])
+
+        CustomUser = apps.get_model('user', 'CustomUser')
+
+        user.user_type = CustomUser.UserType[data['new_status']]
+        user.save(using=self._db)
+
+        return user
 
 class ActiveMembersManager(models.Manager):
     def get_queryset(self):
