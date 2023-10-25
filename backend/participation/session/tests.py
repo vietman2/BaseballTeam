@@ -1,11 +1,17 @@
+from django.test import TransactionTestCase
+from django.db import connection
+from django.db.migrations.executor import MigrationExecutor
+from django.apps import apps
 from rest_framework.test import APITestCase
+from rest_framework import status
 
-from .models import TrainingType
 from user.models import CustomUser
 
-"""
+TrainingType = apps.get_model("session", "TrainingType")
+
 class TrainingTypeAPITestCase(APITestCase):
-    def setUp(self):        
+    def setUp(self):
+        self.url = "/api/trainingtypes/"
         self.normal_user = CustomUser.objects.create_user(
             user_type=CustomUser.UserType.MEMBER,
             name="테스트",
@@ -26,23 +32,42 @@ class TrainingTypeAPITestCase(APITestCase):
             grade=3,
             position=CustomUser.Positions.NEW,
         )
+        self.data = {
+            "type": "새 훈련",
+            "description": "새 훈련 설명"
+        }
 
     def test_unallowed_methods(self):
         self.client.force_authenticate(user=self.captain_user)
-        response = self.client.put('/api/participation/session/trainingtypes/')
-        self.assertEqual(response.status_code, 405)
-        response = self.client.delete('/api/participation/session/trainingtypes/')
-        self.assertEqual(response.status_code, 405)
-        response = self.client.patch('/api/participation/session/trainingtypes/')
-        self.assertEqual(response.status_code, 405)
+        response = self.client.put(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        response = self.client.patch(self.url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        response = self.client.get(self.url + "1/")
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def test_get_list_normal_user(self):
-        self.client.force_authenticate(user=self.normal_user)
-        response = self.client.get('/api/participation/session/trainingtypes/')
-        self.assertEqual(response.status_code, 403)
-
-    def test_get_list_captain_user(self):
+    def test_get_training_types(self):
         self.client.force_authenticate(user=self.captain_user)
-        response = self.client.get('/api/participation/session/trainingtypes/')
-        self.assertEqual(response.status_code, 200)
-"""
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 6)
+
+        self.client.force_authenticate(user=self.normal_user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_training_type(self):
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        self.client.force_authenticate(user=self.captain_user)
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(TrainingType.objects.all().count(), 7)
+        self.assertEqual(TrainingType.objects.last().type, self.data['type'])
+
+        self.client.force_authenticate(user=self.normal_user)
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
