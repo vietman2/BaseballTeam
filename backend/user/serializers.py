@@ -117,26 +117,32 @@ class HandoverSerializer(ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ["old_captain", "new_captain", "old_vice_captain", "new_vice_captain"]\
-        
+        fields = ["old_captain", "new_captain", "old_vice_captain", "new_vice_captain"]
+
     def validate_old_captain(self, value):
-        if not CustomUser.objects.filter(phone_number=value, user_type=CustomUser.UserType.CAPTAIN).exists():
+        if not CustomUser.objects.filter(
+            phone_number=value,
+            user_type=CustomUser.UserType.CAPTAIN
+        ).exists():
             raise serializers.ValidationError("주장이 아닙니다")
 
         return value
-    
+
     def validate_new_captain(self, value):
         if not CustomUser.objects.filter(phone_number=value).exists():
             raise serializers.ValidationError("전화번호가 존재하지 않습니다")
 
         return value
-    
+
     def validate_old_vice_captain(self, value):
-        if not CustomUser.objects.filter(phone_number=value, user_type=CustomUser.UserType.VICE_CAPTAIN).exists():
+        if not CustomUser.objects.filter(
+            phone_number=value,
+            user_type=CustomUser.UserType.VICE_CAPTAIN
+        ).exists():
             raise serializers.ValidationError("부주장이 아닙니다")
 
         return value
-    
+
     def validate_new_vice_captain(self, value):
         if not CustomUser.objects.filter(phone_number=value).exists():
             raise serializers.ValidationError("전화번호가 존재하지 않습니다")
@@ -175,9 +181,9 @@ class StatusChangeSerializer(ModelSerializer):
     def validate_new_status(self, value):
         if value not in CustomUser.UserType.names:
             raise serializers.ValidationError("유저 유형이 올바르지 않습니다")
-        
+
         return value
-    
+
     def validate_phone_number(self, value):
         if not CustomUser.objects.filter(phone_number=value).exists():
             raise serializers.ValidationError("전화번호가 존재하지 않습니다")
