@@ -1,4 +1,7 @@
+import datetime
 from django.db import models
+
+from .managers import SessionManager
 
 class Session(models.Model):
     class DayChoices(models.IntegerChoices):
@@ -12,10 +15,11 @@ class Session(models.Model):
 
     date = models.DateField(db_comment="훈련 날짜")
     day = models.IntegerField(choices=DayChoices.choices, db_comment="훈련 요일")
-    start_time = models.TimeField(db_comment="훈련 시작 시간")
-    end_time = models.TimeField(db_comment="훈련 종료 시간")
+    start_time = models.TimeField(default=datetime.time(0, 0, 0), db_comment="집합 시각 (훈련 시작 시각)")
+    end_time = models.TimeField(default=datetime.time(23, 59, 59), db_comment="훈련 종료 예상 시각")
     training_type = models.ForeignKey("TrainingType", on_delete=models.DO_NOTHING, related_name='sessions')
 
+    objects = SessionManager()
     class Meta:
         ordering = ['date', 'start_time']
         db_table = 'session'
