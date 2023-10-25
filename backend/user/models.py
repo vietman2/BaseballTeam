@@ -39,7 +39,8 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
         error_messages={
             'invalid': "전화번호는 '010-xxxx-xxxx' 형식으로만 받습니다",
             'unique': '이미 존재하는 전화번호입니다'
-        }
+        },
+        unique=True
     )
     freshman_year   = models.IntegerField(blank=False, null=False, db_comment="학번 (입학년도)")
 
@@ -71,9 +72,3 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
         verbose_name        = 'user'
         verbose_name_plural = 'users'
         db_table_comment    = "야구부 부원들의 정보를 담는 테이블"
-        constraints = [
-            models.UniqueConstraint(
-                fields=['phone_number'],
-                name='unique_phone_number'
-            )
-        ]

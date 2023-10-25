@@ -17,8 +17,8 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
 
-    path('api/users/login/', LoginView.as_view(), name='login'),
-    path('api/users/logout/', LogoutView.as_view(), name='logout'),
+    path('api/login/', LoginView.as_view(), name='login'),
+    path('api/logout/', LogoutView.as_view(), name='logout'),
 
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/', SSV.as_view(url_name='schema'), name='swagger-ui'),

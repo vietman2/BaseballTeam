@@ -36,25 +36,9 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def update_password(self, user, password):
-        user.set_password(password)
-        user.save(using=self._db)
-
-        return user
-
-    def update_user(self, user, **extra_fields):
-        for key, value in extra_fields.items():
-            setattr(user, key, value)
-        user.save(using=self._db)
-
-        return user
-
     def delete_user(self, user):
         ## 실제로 삭제하지 말고, is_active를 False로 바꾸는 것으로 대체
-        if not user:
-            raise ValueError('유저가 존재하지 않습니다')
-        
-        CustomUser = apps.get_model('account', 'CustomUser')
+        CustomUser = apps.get_model('user', 'CustomUser')
 
         user.is_active = False
         user.user_type = CustomUser.UserType.DELETED
