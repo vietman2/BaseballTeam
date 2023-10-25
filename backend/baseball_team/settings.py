@@ -41,14 +41,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'account',
+    'user.apps.UserConfig',
     'participation.session',
     'participation.week',
 
-    'rest_framework_simplejwt',
     'rest_framework',
     'drf_spectacular',
-    'corsheaders'
+
+    'allauth',
+    'allauth.account',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'baseball_team.urls'
@@ -97,7 +102,14 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = "account.CustomUser"
+AUTH_USER_MODEL = "user.CustomUser"
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'access',
+    'JWT_AUTH_REFRESH_COOKIE': 'refresh',
+    'JWT_AUTH_HTTPONLY': False,
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -141,9 +153,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES' : (
-        'rest_framework.permissions.AllowAny',
-    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
@@ -151,17 +160,43 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
-REST_USE_JWT = True
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True,
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=120),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+
+    'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': config("SECRET_KEY"),
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
     'AUTH_HEADER_TYPES': ('Bearer', ),
+    'AUTH_HEADER_NAME': "HTTP_AUTHORIZATION",
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken', ),
-    'ACCESS_TOKEN': 'access_token',
-    'REFRESH_TOKEN': 'refresh_token',
+    'TOKEN_TYPE_CLAIM': 'token_type',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Baseball Team API',
+    'DESCRIPTION': 'Baseball Team API 문서입니다.',
+    'VERSION': '1.0.0',
+    'CONTACT': {
+        'name': 'Baseball Team',
+        'url': 'http://www.example.com',
+        'email': 'example@example.com',
+    },
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+    },
 }
 
 CORS_ALLOWED_ORIGINS= [ # (헤더) Access-Control-Allow-Origin 에 담을 주소들
