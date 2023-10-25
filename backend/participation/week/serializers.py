@@ -22,3 +22,8 @@ class WeeklyFormSerializer(serializers.Serializer):
     def get_training_types(self, obj):
         training_types = TrainingType.objects.all()
         return TrainingTypeSerializer(training_types, many=True).data
+
+class WeekListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Week
+        fields = ["id", "yr_mn_wk", "year", "month", "week", "start_date", "end_date"]

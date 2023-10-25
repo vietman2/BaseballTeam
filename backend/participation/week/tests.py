@@ -179,3 +179,22 @@ class WeekAPITestCase(APITestCase):
         self.client.post("/api/weeks/", self.data, format="json")
         response = self.client.post("/api/weeks/", self.data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_list(self):
+        self.client.force_authenticate(self.manager)
+        response = self.client.get("/api/weeks/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.client.post("/api/weeks/", self.data, format="json")
+        response = self.client.get("/api/weeks/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # non leaders can also see the list
+        self.client.force_authenticate(self.normal_user)
+        response = self.client.get("/api/weeks/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_list_fail(self):
+        # not authenticated
+        response = self.client.get("/api/weeks/")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema
 
 from .models import Week
-from .serializers import WeekSerializer, WeeklyFormSerializer
+from .serializers import WeekSerializer, WeeklyFormSerializer, WeekListSerializer
 from user.permissions import IsLeadership
 
 class WeekViewSet(ModelViewSet):
@@ -97,15 +97,16 @@ class WeekViewSet(ModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    """
-    @extend_schema(summary="훈참표 조회", tags=["훈참표 관리"])
+    @extend_schema(summary="과거 훈참표 전부 조회", tags=["훈참표 관리"])
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = WeekSerializer(queryset, many=True)
+        serializer = WeekListSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     @extend_schema(summary="훈참표 1개 조회", tags=["훈참표 관리"])
     def retrieve(self, request, *args, **kwargs):
+        """
+            TODO: 이거 구현하기
+        """
         return super().retrieve(request, *args, **kwargs)
-    """
-    
+
