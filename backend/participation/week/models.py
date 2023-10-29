@@ -1,7 +1,9 @@
 from django.db import models
 
+from .managers import WeekManager
+
 class Week(models.Model):
-    yr_mn_wk    = models.CharField(max_length=10, blank=False, null=False, db_comment="년-월-주차")
+    yr_mn_wk    = models.CharField(unique=True, max_length=20, blank=False, null=False, db_comment="년 월 주차")
     year        = models.IntegerField(blank=False, null=False, db_comment="년")
     month       = models.IntegerField(blank=False, null=False, db_comment="월")
     week        = models.IntegerField(blank=False, null=False, db_comment="주차")
@@ -58,6 +60,8 @@ class Week(models.Model):
         null=True
     )
 
+    objects = WeekManager()
+
     class Meta:
         db_table            = 'week'
         verbose_name        = 'week'
@@ -67,7 +71,6 @@ class Week(models.Model):
             models.Index(fields=['yr_mn_wk',], name='weekly_index'),
         ]
         constraints         = [
-            models.UniqueConstraint(fields=['yr_mn_wk',], name='weekly_unique'),
             models.CheckConstraint(check=models.Q(year__gte=2000), name='year_gte_2000'),
             models.CheckConstraint(check=models.Q(year__lte=9999), name='year_lte_9999'),
             models.CheckConstraint(check=models.Q(month__gte=1), name='month_gte_1'),

@@ -9,11 +9,13 @@ from drf_spectacular.views import (
 
 from user.views import UserViewSet, MyLoginView as LoginView, MyLogoutView as LogoutView
 from participation.session.views import TrainingTypeViewSet
+from participation.week.views import WeekViewSet
 
 router = DefaultRouter()
 
 router.register(prefix=r'users', viewset=UserViewSet, basename='user')
 router.register(prefix=r'trainingtypes', viewset=TrainingTypeViewSet, basename='trainingtype')
+router.register(prefix=r'weeks', viewset=WeekViewSet, basename='week')
 
 urlpatterns = [
     path('api/', include(router.urls)),
