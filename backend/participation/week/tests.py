@@ -1,7 +1,9 @@
+import datetime
 from rest_framework.test import APITestCase
 from rest_framework import status
 
 from user.models import CustomUser
+from participation.week.models import Week
 
 class WeekAPITestCase(APITestCase):
     def setUp(self):
@@ -25,15 +27,16 @@ class WeekAPITestCase(APITestCase):
             grade=3,
             position=6
         )
+        self.monday_date = Week.objects.get_next_monday_date()
         self.data = {
-            "yr_mn_wk": "2023년 10월 5주차",
-            "year": 2023,
-            "month": 10,
-            "week": 5,
-            "start_date": "2023-10-30",
-            "end_date": "2023-11-05",
+            "yr_mn_wk": Week.objects.format_next_monday(self.monday_date),
+            "year": self.monday_date.year,
+            "month": self.monday_date.month,
+            "week": (self.monday_date.day - 1) // 7 + 1,
+            "start_date": self.monday_date,
+            "end_date": self.monday_date + datetime.timedelta(days=6),
             "monday": {
-                "date": "2023-10-30",
+                "date": self.monday_date,
                 "training_type": {
                     "id": 1,
                     "type": "일반",
@@ -49,7 +52,7 @@ class WeekAPITestCase(APITestCase):
                 }
             },
             "tuesday": {
-                "date": "2023-10-31",
+                "date": self.monday_date + datetime.timedelta(days=1),
                 "training_type": {
                     "id": 2,
                     "type": "일반-필참-오후",
@@ -65,7 +68,7 @@ class WeekAPITestCase(APITestCase):
                 }
             },
             "wednesday": {
-                "date": "2023-11-01",
+                "date": self.monday_date + datetime.timedelta(days=2),
                 "training_type": {
                     "id": 1,
                     "type": "일반",
@@ -81,7 +84,7 @@ class WeekAPITestCase(APITestCase):
                 }
             },
             "thursday": {
-                "date": "2023-11-02",
+                "date": self.monday_date + datetime.timedelta(days=3),
                 "training_type": {
                     "id": 1,
                     "type": "일반",
@@ -97,7 +100,7 @@ class WeekAPITestCase(APITestCase):
                 }
             },
             "friday": {
-                "date": "2023-11-03",
+                "date": self.monday_date + datetime.timedelta(days=4),
                 "training_type": {
                     "id": 1,
                     "type": "일반",
@@ -113,7 +116,7 @@ class WeekAPITestCase(APITestCase):
                 }
             },
             "saturday": {
-                "date": "2023-11-04",
+                "date": self.monday_date + datetime.timedelta(days=5),
                 "training_type": {
                     "id": 3,
                     "type": "일반-필참-오전",
@@ -129,7 +132,7 @@ class WeekAPITestCase(APITestCase):
                 }
             },
             "sunday": {
-                "date": "2023-11-05",
+                "date": self.monday_date + datetime.timedelta(days=6),
                 "training_type": {
                     "id": 6,
                     "type": "훈련없음",
@@ -156,6 +159,7 @@ class WeekAPITestCase(APITestCase):
         # already created
         self.client.force_authenticate(self.manager)
         self.client.post("/api/weeks/", self.data, format="json")
+        # set server time to oct 28th, 2023
         response = self.client.get("/api/weeks/form/")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 

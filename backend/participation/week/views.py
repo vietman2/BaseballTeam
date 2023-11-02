@@ -65,8 +65,8 @@ class WeekViewSet(ModelViewSet):
     )
     def form(self, request, *args, **kwargs):
         # get next monday's yr_mn_wk
-        next_monday = datetime.date.today() + datetime.timedelta(days=-datetime.datetime.today().weekday(), weeks=1)
-        next_monday_yr_mn_wk = f"{next_monday.year}년 {next_monday.month}월 {(next_monday.day - 1) // 7 + 1}주차"
+        next_monday = Week.objects.get_next_monday_date()
+        next_monday_yr_mn_wk = Week.objects.format_next_monday(next_monday)
 
         if Week.objects.is_week_created(next_monday_yr_mn_wk):
             return Response({"detail": "이미 훈참표가 생성되었습니다."}, status=status.HTTP_400_BAD_REQUEST)

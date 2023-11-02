@@ -52,3 +52,9 @@ class WeekManager(models.Manager):
                 training_type=training_type,
             )
             return day
+
+    def get_next_monday_date(self):
+        return datetime.date.today() + datetime.timedelta(days=-datetime.datetime.today().weekday(), weeks=1)
+
+    def format_next_monday(self, date):
+        return f"{date.year}년 {date.month}월 {(date.day - 1) // 7 + 1}주차"
