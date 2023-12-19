@@ -8,11 +8,11 @@ import {
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { AuthStackParamList } from "../../containers/AccountContainer";
+import { RootStackParamList } from "../../variables/navigation";
 import { viewStyles, textStyles, containerStyles } from "./styles";
 import { MyButton, TopBox } from "./Components";
 
-type Props = NativeStackScreenProps<AuthStackParamList, "Login">;
+type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 export default function Login({ navigation }: Props) {
   const [username, setUsername] = useState<string>("");
@@ -20,16 +20,7 @@ export default function Login({ navigation }: Props) {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSignIn = async () => {
-    /* Error 1: username or password is empty
-    if (username === "" || password === "") {
-      setErrorMessage("아이디와 비밀번호를 입력해주세요.");
-      return;
-    } */
-    // Error 2: username or password is wrong
-    // Error 3: server error
-    // Error 4: network error
-    // Error 5: unknown error
-    // If there is no error, navigate to the main page
+    navigation.navigate("Main");
   };
   const handleRegister = async () => {
     navigation.navigate("SignUp");

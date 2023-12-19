@@ -23,7 +23,7 @@ export const TopBox = (props: TopBoxProps) => {
   return (
     <View style={containerStyles.topBoxContainer}>
       <Image
-        source={require("../../assets/logo.jpg")}
+        source={require("assets/images/logo.jpg")}
         style={viewStyles.logo}
       />
       <Text style={textStyles.titleText}>{props.title}</Text>

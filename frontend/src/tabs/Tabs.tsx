@@ -3,21 +3,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomNavigation } from "react-native-paper";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import HomeScreen from "../components/Home/Home";
+import HomeScreen from "./Home/Home";
 import TrainingScreen from "../components/Training/Training";
 import MyPageScreen from "../components/MyPage/MyPage";
 import CalendarScreen from "../components/Calendar/Calendar";
+import { BottomTabParamList } from "../variables/navigation";
 
-type MainTabParamList = {
-  Home: undefined;
-  Training: undefined;
-  MyPage: undefined;
-  Calendar: undefined;
-};
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
-const Tab = createBottomTabNavigator<MainTabParamList>();
-
-export default function MainContainer() {
+export default function Tabs() {
   return (
       <Tab.Navigator
         initialRouteName="Home"
