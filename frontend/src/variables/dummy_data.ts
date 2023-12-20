@@ -42,8 +42,8 @@ const weeklyParticipations = [
     phone_number: "010-1234-5678",
     monday: {
       participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      start_time: "17:00",
+      end_time: "21:00",
     },
     tuesday: {
       participation: true,
@@ -56,8 +56,8 @@ const weeklyParticipations = [
     },
     thursday: {
       participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      start_time: "17:00",
+      end_time: "21:00",
     },
     friday: {
       participation: false,
@@ -65,8 +65,8 @@ const weeklyParticipations = [
     },
     saturday: {
       participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      start_time: "08:30",
+      end_time: "13:00",
     },
     sunday: {
       participation: false,
@@ -82,13 +82,13 @@ const weeklyParticipations = [
     phone_number: "010-1234-4321",
     monday: {
       participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      start_time: "17:00",
+      end_time: "21:00",
     },
     tuesday: {
       participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      start_time: "17:00",
+      end_time: "19:00",
     },
     wednesday: {
       participation: false,
@@ -96,17 +96,17 @@ const weeklyParticipations = [
     },
     thursday: {
       participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      start_time: "18:30",
+      end_time: "21:00",
     },
     friday: {
       participation: false,
-      reason: "수업",
+      reason: "봉사",
     },
     saturday: {
       participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      start_time: "08:30",
+      end_time: "13:00",
     },
     sunday: {
       participation: false,
@@ -132,7 +132,7 @@ const weeklyParticipations = [
     },
     wednesday: {
       participation: false,
-      reason: "과외",
+      reason: "시험",
     },
     thursday: {
       participation: true,
@@ -141,12 +141,11 @@ const weeklyParticipations = [
     },
     friday: {
       participation: false,
-      reason: "수업",
+      reason: "가족행사",
     },
     saturday: {
-      participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      participation: false,
+      reason: "보강수업",
     },
     sunday: {
       participation: false,
