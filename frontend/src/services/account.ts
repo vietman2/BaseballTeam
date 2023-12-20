@@ -16,10 +16,10 @@ export async function login(email: string, password: string) {
 
     return response.data;
   } catch (error: any) {
-    return error.response.data;
+    return error;
   }
 }
-
+/*
 export async function logout() {
   // TODO: 로그아웃 API 호출, 토큰 삭제
 }
@@ -27,3 +27,4 @@ export async function logout() {
 export async function signup() {
   // TODO: 회원가입 API 호출
 }
+*/

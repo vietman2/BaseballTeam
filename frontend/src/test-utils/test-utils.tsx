@@ -1,15 +1,35 @@
-import { ReactElement } from 'react';
-import { render } from '@testing-library/react-native';
-import { Provider } from 'react-redux';
+import { PropsWithChildren, ReactElement } from "react";
+import { Provider } from "react-redux";
+import { PaperProvider } from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { PreloadedState } from "@reduxjs/toolkit";
+import { render, RenderOptions } from "@testing-library/react-native";
 
-import store from '../store/store';
+import { RootState, AppStore } from "../store/store";
+import { setupStore } from "../store/slices/index";
 
-const AllTheProviders = ({ children }: { children: ReactElement }) => {
-  return <Provider store={store}>{children}</Provider>;
-};
+interface ExtendedRenderOptions extends Omit<RenderOptions, "queries"> {
+  preloadedState?: PreloadedState<RootState>;
+  store?: AppStore;
+}
 
-const customRender = (ui: ReactElement, options?: any) =>
-    render(ui, { wrapper: AllTheProviders, ...options });
+export function renderWithProviders(
+  ui: ReactElement,
+  {
+    preloadedState = {},
+    store = setupStore(preloadedState),
+    ...renderOptions
+  }: ExtendedRenderOptions = {}
+) {
+  function Wrapper({ children }: PropsWithChildren): JSX.Element {
+    return (
+      <Provider store={store}>
+        <PaperProvider>
+          <SafeAreaProvider>{children}</SafeAreaProvider>
+        </PaperProvider>
+      </Provider>
+    );
+  }
 
-export * from '@testing-library/react-native';
-export { customRender as render };
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+}

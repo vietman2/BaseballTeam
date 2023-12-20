@@ -6,7 +6,7 @@ import { DailyParticipation } from "../../variables/types";
 export default function WeeklyTable() {
     const getData = (day: DailyParticipation) => {
         if (day.participation === false) {
-            return day.reason?.toString() ?? "X"
+            return day.reason
         }
         else return "O"
     }

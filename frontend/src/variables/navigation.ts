@@ -5,7 +5,6 @@ import { StackScreenProps } from "@react-navigation/stack";
 export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
-  SignUp2: undefined;
   Main: undefined;
 };
 export type RootStackScreenProps<T extends keyof RootStackParamList> =

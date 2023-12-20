@@ -1,6 +1,7 @@
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
-import WeeklyTable from "../../components/WeeklyTable/WeeklyTable";
+
+import WeeklyTable from "../../../components/WeeklyTable/WeeklyTable";
 
 export default function Home() {
   return (

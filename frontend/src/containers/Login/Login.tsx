@@ -6,13 +6,17 @@ import {
   Platform,
   Text,
 } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackNavigationProp } from "@react-navigation/stack";
 
+import TextButton from "../../components/Button/TextButton";
+import LogoTitle from "../../components/Title/LogoTitle";
 import { RootStackParamList } from "../../variables/navigation";
-import { viewStyles, textStyles, containerStyles } from "./styles";
-import { MyButton, TopBox } from "./Components";
+import { viewStyles, textStyles, containerStyles } from "../styles";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Login">;
+type LoginNavigationProp = StackNavigationProp<RootStackParamList, "Login">;
+interface Props {
+  navigation: LoginNavigationProp;
+}
 
 export default function Login({ navigation }: Props) {
   const [username, setUsername] = useState<string>("");
@@ -48,12 +52,12 @@ export default function Login({ navigation }: Props) {
   const Buttons = () => {
     return (
       <View style={containerStyles.buttonContainer}>
-        <MyButton text="로그인" onPress={handleSignIn} />
+        <TextButton text="로그인" onPress={handleSignIn} />
         {errorMessage ? (
           <Text style={textStyles.errorText}>{errorMessage}</Text>
         ) : null}
         <Text style={textStyles.normalText}>계정이 없으신가요?</Text>
-        <MyButton text="회원가입" onPress={handleRegister} />
+        <TextButton text="회원가입" onPress={handleRegister} />
       </View>
     );
   };
@@ -65,7 +69,7 @@ export default function Login({ navigation }: Props) {
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
       enabled
     >
-      <TopBox title="로그인" />
+      <LogoTitle title="로그인 화면" />
       <TextInputFields />
       <Buttons />
     </KeyboardAvoidingView>

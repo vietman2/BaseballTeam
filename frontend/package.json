@@ -11,17 +11,27 @@
   },
   "jest": {
     "preset": "react-native",
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-native/extend-expect"
+    "setupFiles": [
+      "./src/test-utils/jest.setup.ts"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native)"
+      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation)"
     ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/jest",
       "/android",
       "/ios"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/**/*/types.ts",
+      "!src/**/*/navigation.ts",
+      "!src/**/*/styles.ts",
+      "!src/**/*/store.ts",
+      "!src/**/*/apiConfig.ts",
+      "!src/variables/**/*.{js,jsx,ts,tsx}"
     ]
   },
   "dependencies": {
