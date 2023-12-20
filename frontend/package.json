@@ -11,17 +11,27 @@
   },
   "jest": {
     "preset": "react-native",
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-native/extend-expect"
+    "setupFiles": [
+      "./src/test-utils/jest.setup.ts"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native)"
+      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation)"
     ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/jest",
       "/android",
       "/ios"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/**/*/types.ts",
+      "!src/**/*/navigation.ts",
+      "!src/**/*/styles.ts",
+      "!src/**/*/store.ts",
+      "!src/**/*/apiConfig.ts",
+      "!src/variables/**/*.{js,jsx,ts,tsx}"
     ]
   },
   "dependencies": {
@@ -29,6 +39,7 @@
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
+    "@react-navigation/stack": "^6.3.20",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react-native-vector-icons": "^6.4.13",
     "@types/react-redux": "^7.1.25",
