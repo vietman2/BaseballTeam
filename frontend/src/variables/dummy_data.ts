@@ -16,9 +16,9 @@ const users: User[] = [
     user_type: "VICE_CAPTAIN",
     name: "부주장",
     phone_number: "010-1234-4321",
-    freshman_year: 2018,
+    freshman_year: 2022,
     major: "컴퓨터공학과",
-    grade: 3,
+    grade: 2,
     position: "LEFT_FIELD",
   },
   {
@@ -26,10 +26,10 @@ const users: User[] = [
     user_type: "MEMBER",
     name: "평부원",
     phone_number: "010-1234-1234",
-    freshman_year: 2018,
+    freshman_year: 2023,
     major: "컴퓨터공학과",
-    grade: 3,
-    position: "RIGHT_FIELD",
+    grade: 1,
+    position: "CATCHER",
   },
 ];
 
@@ -91,8 +91,9 @@ const weeklyParticipations = [
       end_time: "19:00",
     },
     wednesday: {
-      participation: false,
-      reason: "과외",
+      participation: true,
+      start_time: "17:30",
+      end_time: "20:30",
     },
     thursday: {
       participation: true,
@@ -112,7 +113,7 @@ const weeklyParticipations = [
       participation: false,
       reason: "훈련없음",
     },
-    total: 4,
+    total: 5,
   },
   {
     no: 3,
@@ -151,7 +152,7 @@ const weeklyParticipations = [
       participation: false,
       reason: "훈련없음",
     },
-    total: 4,
+    total: 3,
   },
 ];
 
