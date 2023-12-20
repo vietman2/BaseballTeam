@@ -77,8 +77,8 @@ const weeklyParticipations = [
   {
     no: 2,
     name: "부주장",
-    major: "컴퓨터공학과",
-    grade: 3,
+    major: "경영학과",
+    grade: 2,
     phone_number: "010-1234-4321",
     monday: {
       participation: true,
@@ -117,18 +117,18 @@ const weeklyParticipations = [
   {
     no: 3,
     name: "평부원",
-    major: "컴퓨터공학과",
-    grade: 3,
+    major: "체육교육과",
+    grade: 1,
     phone_number: "010-1234-1234",
     monday: {
       participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      start_time: "16:30",
+      end_time: "19:30",
     },
     tuesday: {
       participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      start_time: "16:00",
+      end_time: "20:00",
     },
     wednesday: {
       participation: false,
@@ -136,8 +136,8 @@ const weeklyParticipations = [
     },
     thursday: {
       participation: true,
-      start_time: "10:00",
-      end_time: "12:00",
+      start_time: "19:30",
+      end_time: "21:00",
     },
     friday: {
       participation: false,
