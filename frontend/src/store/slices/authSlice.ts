@@ -30,7 +30,7 @@ export const authSlice = createSlice({
       state.token = action.payload.token;
       state.user = action.payload.user;
     });
-    builder.addCase(logout.fulfilled, (state, action) => {
+    builder.addCase(logout.fulfilled, (state) => {
       state.token = null;
       state.user = null;
     });
